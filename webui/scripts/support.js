@@ -11,7 +11,7 @@ class SessionUser {
 }
 
 sessionUser = new SessionUser('','','')
- url = "http://chitapp:20220/"
+ url = "http://localhost:20220/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
 function getMenus()
@@ -36,22 +36,12 @@ function login()
         "pwd" : pwd
     };
      let request = new XMLHttpRequest () ;
-
-    request.open("POST",url+'api/login/checkLogin',false);
+    auth = "Basic " + btoa(name + ":" + pwd);
+    request.open("GET",url+'api/login/sayhello',false);
+    request.setRequestHeader("Authorization", auth);
      request.setRequestHeader("Content-type", "application/json");
         request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-        // Typical action to be performed when the document is ready:
-         responseObject = JSON.parse(request.responseText);
-         sessionUser.firstName =responseObject.FirstName;
-         sessionUser.lastName =responseObject.LastName ;
-         sessionUser.sessionId = responseObject.sessionId;
-         console.log(sessionUser);
-         localStorage = window.localStorage;
-         localStorage.setItem("userFirstName", sessionUser.firstName);
-         localStorage.setItem("userLastName", sessionUser.lastName);
-         localStorage.setItem("userSession", sessionUser.sessionId);
-
          window.location.href = './bopages/bolanding.html'
         }else
         {

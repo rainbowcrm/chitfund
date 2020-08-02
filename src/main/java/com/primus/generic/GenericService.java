@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Component
 public class GenericService {
 
@@ -42,6 +44,10 @@ public class GenericService {
     }
 
 
+    public List<BusinessModel> listData(String entity, int from , int to , String whereCondition, String orderby ) {
+        GenericDAO dao = getDAO();
+        return dao.listData(entity,from,to,whereCondition,null);
+    }
 
 
 }

@@ -9,13 +9,26 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:20220", maxAge = 3600)
-@RequestMapping("/api/login")
+@RequestMapping("/api/login/")
 @RestController
 public class BOLoginController {
 
     @Autowired
     BOLoginService boLoginService;
 
+    @RequestMapping(value = "/initlogin",method = RequestMethod.GET)
+    private ResponseEntity<String> initlogin()
+    {
+        ResponseEntity entity =  new ResponseEntity<String>("hello",HttpStatus.OK);
+        return entity;
+    }
+
+    @RequestMapping(value = "/sayhello",method = RequestMethod.GET)
+    private ResponseEntity<String> sayhello()
+    {
+        ResponseEntity entity =  new ResponseEntity<String>("hello",HttpStatus.OK);
+        return entity;
+    }
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
         private ResponseEntity<Map> checkLogin(@RequestBody Map<String,String> input)
         {
@@ -35,6 +48,7 @@ public class BOLoginController {
                 return  entity;
 
             }else{
+
                 ResponseEntity entity =  new ResponseEntity<Map>(ret,HttpStatus.UNAUTHORIZED);
 
                 return  entity;
