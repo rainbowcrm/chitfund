@@ -26,7 +26,34 @@ function getMenus()
        console.log("Responss   e =" + request.responseText );
         return  snapsotresponse;
 }
+function getGenericList(pageid)
+{
+    let request = new XMLHttpRequest () ;
+    request.open("GET",url+'api/commonui/getPage?pageid='+ pageid,false);
+    request.setRequestHeader("Content-type", "application/json");
+    request.send() ;
+    var snapsotresponse  =   JSON.parse(request.responseText)  ;
+    console.log("Responss   e =" + request.responseText );
+     return  snapsotresponse;
 
+}
+
+function getPageCreate(pageid)
+{
+    let request = new XMLHttpRequest () ;
+    request.open("GET",url+'api/commonui/getPage?pageid='+ pageid,false);
+    request.setRequestHeader("Content-type", "application/json");
+    request.send() ;
+    var snapsotresponse  =   JSON.parse(request.responseText)  ;
+    console.log("Responss   e =" + request.responseText );
+     return  snapsotresponse;
+
+}
+
+function showPage(pageName)
+{
+ document.getElementById("ifrmContent").src=pageName;
+}
 function login()
     {
         var name = document.getElementById("txtname").value ;

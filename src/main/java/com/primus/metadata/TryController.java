@@ -1,4 +1,4 @@
-package com.primus.common;
+package com.primus.metadata;
 
 public class TryController {
 }

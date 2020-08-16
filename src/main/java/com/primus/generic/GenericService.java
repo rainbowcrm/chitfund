@@ -44,7 +44,7 @@ public class GenericService {
     }
 
 
-    public List<BusinessModel> listData(String entity, int from , int to , String whereCondition, String orderby ) {
+    public List<BusinessModel> listData(String entity, int from , int to , String whereCondition, String orderby,BusinessContext context ) {
         GenericDAO dao = getDAO();
         return dao.listData(entity,from,to,whereCondition,null);
     }

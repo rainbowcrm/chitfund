@@ -24,7 +24,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-          http.authorizeRequests().antMatchers("/api/login/sayhello").permitAll()
+          http.authorizeRequests()
                   .anyRequest().authenticated().and().httpBasic().and().csrf()
                  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
