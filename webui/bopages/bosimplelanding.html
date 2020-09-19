@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bosimplelanding.css">
+    <title>Dhanam Online Chits</title>
+</head>
+<body>
+<script src="../scripts/support.js"></script>
+<div class="topbar">
+    Top bar
+</div>
+<div class="sidebar">
+
+
+          <script>
+
+                  appmenus = getMenus();
+                  menus = appmenus.Menus;
+                  document.title = appmenus.AppDisplayName;
+
+                  for ( var i in menus) {
+                    var menu = menus[i];
+                    var firstPart ='<a href="#"  onclick="showPage(\''+ menu.HtmlFile +'\')"> ';
+                    document.write(firstPart +menu.Title+'</a>');
+                    console.log('added ' + menu.Title );
+                  }
+
+
+
+           </script>
+</div>
+
+<div class="content">
+    <iframe id ="ifrmContent" src ="bodashboard.html" style="width:100%;height:100%" ></iframe>
+</div>
+</body>

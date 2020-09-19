@@ -73,19 +73,48 @@ public class Field extends ModelObject {
     }
 
     String fieldName;
-    String label;
+    String labelKey;
     String jsonTag ;
     String populator;
     MetadataEntity entity ;
+    String labelValue;
+    String displayControl;
+    Integer screenWidth ;
 
-
-    @Column(name = "UI_LABEL")
-    public String getLabel() {
-        return label;
+    @Column(name = "UI_LABEL_VALUE")
+    public String getLabelValue() {
+        return labelValue;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLabelValue(String labelValue) {
+        this.labelValue = labelValue;
+    }
+
+    @Column(name = "DISPLAY_CONTROL")
+    public String getDisplayControl() {
+        return displayControl;
+    }
+
+    public void setDisplayControl(String displayControl) {
+        this.displayControl = displayControl;
+    }
+
+    @Column(name = "SCREEN_WIDTH")
+    public Integer getScreenWidth() {
+        return screenWidth;
+    }
+
+    public void setScreenWidth(Integer screenWidth) {
+        this.screenWidth = screenWidth;
+    }
+
+    @Column(name = "UI_LABEL_KEY")
+    public String getLabelKey() {
+        return labelKey;
+    }
+
+    public void setLabelKey(String label) {
+        this.labelKey = label;
     }
 
     @Column(name = "JSON_TAG")
@@ -118,7 +147,8 @@ public class Field extends ModelObject {
     }
 
     @ManyToOne(cascade=CascadeType.DETACH)
-    @JoinColumn(name  ="ENTITY_ID")
+    @JoinColumn(name  ="ENTITY_NAME")
+    @RadsPropertySet(excludeFromXML = true,excludeFromMap = true,excludeFromJSON = true)
     public MetadataEntity getEntity() {
         return entity;
     }

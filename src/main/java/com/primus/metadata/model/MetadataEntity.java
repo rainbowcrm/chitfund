@@ -12,27 +12,14 @@ import java.util.Date;
 public class MetadataEntity extends ModelObject {
 
 
-    protected Date lastUpdateDate;
+ /*   protected Date lastUpdateDate;
     protected Date createdDate;
     protected String createdBy;
-    protected String lastUpdatedBy;
+    protected String lastUpdatedBy;*/
 
 
-    protected int id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    @RadsPropertySet(isPK = true)
-    public int getId() {
-        return id;
-
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+/*
     @Column(name = "CREATED_DATE")
     public Date getCreatedDate() {
         return createdDate;
@@ -70,14 +57,16 @@ public class MetadataEntity extends ModelObject {
 
     public void setLastUpdatedBy(String lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
-    }
+    }*/
 
     String name;
     boolean hasSub ;
     MetadataEntity parentEntity ;
     Collection<Field> fields ;
 
-    @Column(name = "NAME")
+    @Id
+    @Column(name = "ENTITY_NAME")
+    @RadsPropertySet(isPK = true)
     public String getName() {
         return name;
     }
@@ -96,7 +85,7 @@ public class MetadataEntity extends ModelObject {
     }
 
     @ManyToOne(cascade=CascadeType.DETACH)
-    @JoinColumn(name  ="PARENT_ID")
+    @JoinColumn(name  ="PARENT_ENTITY")
     public MetadataEntity getParentEntity() {
         return parentEntity;
     }

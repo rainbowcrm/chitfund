@@ -17,6 +17,14 @@ html{
   box-shadow: 5px 7px 25px #999;
 }
 
+.content-section{
+  height: 100vh;
+
+  margin-top: 6%;
+  width: 100%;
+
+}
+
 .bottom-border {
   border-bottom: 1px groove #eee;
 }
@@ -114,9 +122,18 @@ html{
 
 
 
+.table-title {
+		padding-bottom: 15px;
+		background: #435d7d;
+		color: #fff;
+		padding: 16px 30px;
+		margin: -20px -25px 10px;
+		border-radius: 3px 3px 0 0;
+    }
 
-
-
+.right-aligned{
+text-aligned:right !important;
+}
 
 
 

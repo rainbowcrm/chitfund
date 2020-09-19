@@ -11,7 +11,7 @@ class SessionUser {
 }
 
 sessionUser = new SessionUser('','','')
- url = "http://localhost:20220/"
+ url = "https://localhost:20220/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
 function getMenus()
