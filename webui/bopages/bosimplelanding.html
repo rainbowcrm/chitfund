@@ -12,7 +12,7 @@
 </div>
 <div class="sidebar">
 
-
+        <ul>
           <script>
 
                   appmenus = getMenus();
@@ -23,12 +23,14 @@
                     var menu = menus[i];
                     var firstPart ='<a href="#"  onclick="showPage(\''+ menu.HtmlFile +'\')"> ';
                     document.write(firstPart +menu.Title+'</a>');
+                  //document.write('<li>' +firstPart +menu.Title+'</a>' + '</li>');
                     console.log('added ' + menu.Title );
                   }
 
 
 
            </script>
+        </ul>
 </div>
 
 <div class="content">

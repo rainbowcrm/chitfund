@@ -11,7 +11,7 @@ class SessionUser {
 }
 
 sessionUser = new SessionUser('','','')
- url = "https://localhost:20220/"
+ url = "http://localhost:20220/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
 function getMenus()
@@ -29,6 +29,7 @@ function getMenus()
 function getGenericList(pageid)
 {
     let request = new XMLHttpRequest () ;
+    console.log(pageid);
     request.open("GET",url+'api/commonui/getPage?pageid='+ pageid,false);
     request.setRequestHeader("Content-type", "application/json");
     request.send() ;
@@ -49,6 +50,57 @@ function getPageCreate(pageid)
      return  snapsotresponse;
 
 }
+function saveData(entity)
+{
+ct = document.getElementById("frmgenericAdd").elements.length ;
+let postContent= { };
+for (i =0 ; i < ct ;i ++)
+{
+   var propValue = document.getElementById("frmgenericAdd").elements[i].value;
+   var propTag = document.getElementById("frmgenericAdd").elements[i].getAttribute("data-json");
+   if (propTag != '' && propTag != null )
+        postContent[propTag] = propValue;
+}
+console.log(postContent);
+console.log(entity);
+
+fullurl = url + 'api/generic/create?entity=' + entity ;
+let request = new XMLHttpRequest () ;
+request.open("POST",fullurl,false);
+
+                var allcookies = document.cookie;
+               cookiearray = allcookies.split(';');
+
+               for(var i=0; i<cookiearray.length; i++) {
+                  name = cookiearray[i].split('=')[0];
+                  value = cookiearray[i].split('=')[1];
+                 console.log ("Key is : " + name + " and Value is : " + value);
+                  if(name.trim() =='XSRF-TOKEN') {
+                      request.setRequestHeader("X-XSRF-TOKEN", value);
+                      console.log('added x-xsrf-token');
+                      }
+               }
+
+request.setRequestHeader("Content-type", "application/json");
+     request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+         alert('success');
+        }else
+        {
+         alert('error');
+        }
+
+    };
+
+    try {
+       request.send(JSON.stringify(postContent),true) ;
+    }catch(err)
+    {
+     document.getElementById("erromessage").innerHTML ="Authorization failed";
+    }
+return false;
+}
+
 
 function showPage(pageName)
 {
@@ -78,11 +130,13 @@ function login()
 
     try {
        request.send(JSON.stringify(data),true) ;
+
+
     }catch(err)
     {
      document.getElementById("erromessage").innerHTML ="Authorization failed";
     }
-
+       // alert(document.cookie);
     return false;
     }
 
