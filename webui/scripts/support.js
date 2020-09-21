@@ -14,6 +14,13 @@ sessionUser = new SessionUser('','','')
  url = "http://localhost:20220/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
+function populateData(pkValue,entity)
+{
+alert(pkValue);
+alert(entity);
+}
+
+
 function getMenus()
 {
      let request = new XMLHttpRequest () ;
@@ -82,6 +89,7 @@ request.open("POST",fullurl,false);
                }
 
 request.setRequestHeader("Content-type", "application/json");
+request.setRequestHeader("Access-Control-Allow-Origin", url);
      request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
          alert('success');

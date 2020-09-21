@@ -81,6 +81,16 @@ public class Field extends ModelObject {
     String displayControl;
     Integer screenWidth ;
 
+    Boolean isPK;
+    Boolean isBK;
+    Boolean isMandatory;
+
+    String listPageBV;
+    String addPageBV;
+    String editPageBV;
+
+
+
     @Column(name = "UI_LABEL_VALUE")
     public String getLabelValue() {
         return labelValue;
@@ -155,5 +165,60 @@ public class Field extends ModelObject {
 
     public void setEntity(MetadataEntity entity) {
         this.entity = entity;
+    }
+
+
+    @Column(name = "IS_PK")
+    public Boolean isPK() {
+        return isPK;
+    }
+
+    public void setPK(Boolean PK) {
+        isPK = PK;
+    }
+
+    @Column(name = "IS_BK")
+    public Boolean isBK() {
+        return isBK;
+    }
+
+    public void setBK(Boolean BK) {
+        isBK = BK;
+    }
+
+    @Column(name = "IS_MANDATORY")
+    public Boolean isMandatory() {
+        return isMandatory;
+    }
+
+    public void setMandatory(Boolean mandatory) {
+        isMandatory = mandatory;
+    }
+
+    @Column(name = "LIST_PAGE_BV")
+    public String getListPageBV() {
+        return listPageBV;
+    }
+
+    public void setListPageBV(String listPageBV) {
+        this.listPageBV = listPageBV;
+    }
+
+    @Column(name = "ADD_PAGE_BV")
+    public String getAddPageBV() {
+        return addPageBV;
+    }
+
+    public void setAddPageBV(String addPageBV) {
+        this.addPageBV = addPageBV;
+    }
+
+    @Column(name = "EDIT_PAGE_BV")
+    public String getEditPageBV() {
+        return editPageBV;
+    }
+
+    public void setEditPageBV(String editPageBV) {
+        this.editPageBV = editPageBV;
     }
 }

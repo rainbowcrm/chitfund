@@ -54,10 +54,13 @@ pageContent = getGenericList(entity);
                    <thead>
                    <tr class="text-muted">
                        <script>
+                       pkField = '';
                        fields = pageContent.fields
                        document.write('<th></th>');
                        for ( var i in fields) {
                           var field = fields[i];
+                          if(field.PK == true)
+                             pkField=field.FieldName;
                           document.write('<th>' +  field.LabelValue + '</th>');
                        }
                        document.write('<th></th>');
@@ -69,17 +72,18 @@ pageContent = getGenericList(entity);
                         data = pageContent.data
                         for ( var i in data) {
                                singleRow=  data[i];
+                               console.log(fields);
 
                                document.write("<tr>");
-                               document.write('<td><input type="checkbox" id="checkbox2" name="options[]" value="' + singleRow[0] + '"></td>');
+                               document.write('<td><input type="checkbox" id="checkbox2" name="options[]" value="' + singleRow[pkField] + '"></td>');
                                for ( var i in fields) {
                                   var field = fields[i];
                                   document.write('<td>' + singleRow[field.FieldName] + '</td>');
                                }
                                document.write('<td>');
-								document.write('<a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>');
+								document.write('<a href="#editDataModel" class="edit" onClick = "populateData(\''+singleRow[pkField]+'\',\'' + entity + '\');" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>');
 								document.write('&nbsp');
-								document.write('<a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>');
+								document.write('<a href="#deleteDataModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>');
 							document.write('</td>');
                                 document.write("</tr>");
                         }
@@ -135,6 +139,56 @@ pageContent = getGenericList(entity);
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         <script>
                             document.write('<input type="button" class="btn btn-success" onclick="saveData(\''+entity+'\');" value="Add">');
+
+                        </script>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="editDataModel" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="frmgenericEdit">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit <script> document.write(entity); </script></h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <script>
+                    fields = pageContent.fields
+
+                    for ( var i in fields) {
+                    document.write('<div class="form-group">');
+                    var field = fields[i];
+                    document.write('<label>'+ field.LabelValue + ' </label>');
+                    document.write('<input id="txtE' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                    document.write('</div>');
+                    }
+                    </script>
+                        <!--
+                             <div class="form-group">
+                                 <label>Name</label>
+                                 <input type="text" class="form-control" required>
+                             </div>
+                             <div class="form-group">
+                                 <label>Email</label>
+                                 <input type="email" class="form-control" required>
+                             </div>
+                             <div class="form-group">
+                                 <label>Address</label>
+                                 <textarea class="form-control" required></textarea>
+                             </div>
+                             <div class="form-group">
+                                 <label>Phone</label>
+                                 <input type="text" class="form-control" required>
+                             </div>-->
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                        <script>
+                            document.write('<input type="button" class="btn btn-success" onclick="saveData(\''+entity+'\');" value="Update">');
 
                         </script>
                     </div>
