@@ -14,11 +14,7 @@ sessionUser = new SessionUser('','','')
  url = "http://localhost:20220/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
-function populateData(pkValue,entity)
-{
-alert(pkValue);
-alert(entity);
-}
+
 
 
 function getMenus()
@@ -27,7 +23,7 @@ function getMenus()
 
      request.open("GET",url+'api/application/getMenus',false);
      request.setRequestHeader("Content-type", "application/json");
-
+        setToken(request);
       request.send() ;
        var snapsotresponse  =   JSON.parse(request.responseText)  ;
        console.log("Responss   e =" + request.responseText );
@@ -36,9 +32,11 @@ function getMenus()
 function getGenericList(pageid)
 {
     let request = new XMLHttpRequest () ;
+
     console.log(pageid);
     request.open("GET",url+'api/commonui/getPage?pageid='+ pageid,false);
     request.setRequestHeader("Content-type", "application/json");
+     setToken(request);
     request.send() ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Responss   e =" + request.responseText );
@@ -49,13 +47,48 @@ function getGenericList(pageid)
 function getPageCreate(pageid)
 {
     let request = new XMLHttpRequest () ;
+
     request.open("GET",url+'api/commonui/getPage?pageid='+ pageid,false);
+    request.setRequestHeader("Content-type", "application/json");
+     setToken(request);
+    request.send() ;
+    var snapsotresponse  =   JSON.parse(request.responseText)  ;
+    console.log("Response =" + request.responseText );
+     return  snapsotresponse;
+
+}
+
+function populateData(pkValue,entity)
+{
+    alert(pkValue);
+    alert(entity);
+    let request = new XMLHttpRequest () ;
+
+    fullurl = url + 'api/commonui/getDataFromPK?entity=' + entity + "&pk=" + pkValue;
+    request.open("GET",fullurl,false);
     request.setRequestHeader("Content-type", "application/json");
     request.send() ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
-    console.log("Responss   e =" + request.responseText );
-     return  snapsotresponse;
+    console.log("Response =" + request.responseText );
 
+
+}
+function setToken (request)
+{
+
+
+    var allcookies = document.cookie;
+   cookiearray = allcookies.split(';');
+
+   for(var i=0; i<cookiearray.length; i++) {
+      name = cookiearray[i].split('=')[0];
+      value = cookiearray[i].split('=')[1];
+     console.log ("Key is : " + name + " and Value is : " + value);
+      if(name.trim() =='XSRF-TOKEN') {
+          request.setRequestHeader("X-XSRF-TOKEN", value);
+          console.log('added x-xsrf-token');
+          }
+   }
 }
 function saveData(entity)
 {
@@ -74,19 +107,7 @@ console.log(entity);
 fullurl = url + 'api/generic/create?entity=' + entity ;
 let request = new XMLHttpRequest () ;
 request.open("POST",fullurl,false);
-
-                var allcookies = document.cookie;
-               cookiearray = allcookies.split(';');
-
-               for(var i=0; i<cookiearray.length; i++) {
-                  name = cookiearray[i].split('=')[0];
-                  value = cookiearray[i].split('=')[1];
-                 console.log ("Key is : " + name + " and Value is : " + value);
-                  if(name.trim() =='XSRF-TOKEN') {
-                      request.setRequestHeader("X-XSRF-TOKEN", value);
-                      console.log('added x-xsrf-token');
-                      }
-               }
+setToken(request);
 
 request.setRequestHeader("Content-type", "application/json");
 request.setRequestHeader("Access-Control-Allow-Origin", url);
@@ -124,8 +145,9 @@ function login()
     };
      let request = new XMLHttpRequest () ;
     auth = "Basic " + btoa(name + ":" + pwd);
-    request.open("GET",url+'api/login/sayhello',false);
+    request.open("GET",url+'api/login/sayhello',true);
     request.setRequestHeader("Authorization", auth);
+    setToken(request);
      request.setRequestHeader("Content-type", "application/json");
         request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {

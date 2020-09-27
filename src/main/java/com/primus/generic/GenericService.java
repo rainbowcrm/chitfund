@@ -49,5 +49,10 @@ public class GenericService {
         return dao.listData(entity,from,to,whereCondition,null);
     }
 
+    public BusinessModel fetchData(String entity, String pk , BusinessContext context ) {
+        GenericDAO dao = getDAO();
+        return dao.getById(entity,pk);
+    }
+
 
 }
