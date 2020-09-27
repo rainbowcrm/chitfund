@@ -34,6 +34,19 @@ public class GenericController {
 
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity<Map> updateObject(  @RequestBody Map<String,Object> input,@RequestParam  String entity)
+    {
+        BusinessContext context = new BusinessContext();
+
+        String entityClass = primusEntityFactory.getEntityClass(entity);
+        BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
+        genericService.update(model,context);
+        ResponseEntity responseEntity =  new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
+        return responseEntity;
+
+    }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<List> listObjects(@RequestParam  String entity ,
                                             @RequestParam Integer fromRec  , @RequestParam Integer toRec )

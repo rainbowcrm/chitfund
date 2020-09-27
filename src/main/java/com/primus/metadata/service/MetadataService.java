@@ -8,22 +8,33 @@ import com.primus.metadata.model.MetadataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class MetadataService {
 
+    Map<String,MetadataEntity> cachedMetadata = new HashMap<>();
+
+
     @Autowired
     MetadataDAO metadataDAO;
 
-    private String [] fieldStr =  new String[] {"Code","Name","Description","Email","Phone"};
     public Map getPage(String entity)
     {
+
+
         GenericService genericService = (GenericService) ServiceFactory.services().instantiateObject("genericService") ;
-        MetadataEntity metadataEntity = metadataDAO.getEntityDetails(entity);
+        MetadataEntity metadataEntity =  null;
+        if (cachedMetadata.get(entity) == null)
+        {
+            metadataEntity = metadataDAO.getEntityDetails(entity);
+            cachedMetadata.put(entity,metadataEntity);
+        }
+        else
+        {
+            metadataEntity = cachedMetadata.get(entity);
+        }
+
 
         Map ans = new LinkedHashMap();
         List<Map> fields = new ArrayList<>();
@@ -46,5 +57,9 @@ public class MetadataService {
         return ans;
 
 
+    }
+
+    public  MetadataEntity getMetadata(String entity) {
+        return cachedMetadata.get(entity) ;
     }
 }

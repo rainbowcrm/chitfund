@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:20220", maxAge = 3600)
+@CrossOrigin(origins = "https://localhost:20220", maxAge = 3600)
 @RequestMapping("/api/commonui")
 @RestController
 public class CommonAPIController {

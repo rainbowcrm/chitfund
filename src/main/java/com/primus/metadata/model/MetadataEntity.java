@@ -63,6 +63,7 @@ public class MetadataEntity extends ModelObject {
     boolean hasSub ;
     MetadataEntity parentEntity ;
     Collection<Field> fields ;
+    String className;
 
     @Id
     @Column(name = "ENTITY_NAME")
@@ -102,5 +103,14 @@ public class MetadataEntity extends ModelObject {
 
     public void setFields(Collection<Field> fields) {
         this.fields = fields;
+    }
+
+    @Column(name = "CLASSNAME")
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 }

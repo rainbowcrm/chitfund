@@ -1,20 +1,20 @@
 package com.primus.entity;
 
 
+import com.primus.metadata.model.MetadataEntity;
+import com.primus.metadata.service.MetadataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PrimusEntityFactory {
 
+    @Autowired
+    MetadataService metadataService;
 
     public String getEntityClass(String entityName)
     {
-        switch (entityName)
-        {
-            case "Brand" : return "com.primus.brands.model.Brand";
-
-        }
-        return "";
+        MetadataEntity metadataEntity = metadataService.getMetadata(entityName);
+        return metadataEntity.getClassName() ;
     }
 }

@@ -1,5 +1,7 @@
 package com.primus.generic;
 
+import com.primus.metadata.model.MetadataEntity;
+import com.primus.metadata.service.MetadataService;
 import com.techtrade.rads.framework.model.transaction.TransactionResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,9 @@ import java.util.List;
 
 @Component
 public class GenericService {
+
+    @Autowired
+    MetadataService metadataService ;
 
     @Autowired
     GenericDAO genericDAO;
@@ -39,7 +44,7 @@ public class GenericService {
 
         model.setLastUpdatedBy(context.getUser());
         model.setLastUpdateDate(new java.util.Date());
-        dao.create(model);
+        dao.update(model);
         return new TransactionResult();
     }
 
@@ -51,7 +56,14 @@ public class GenericService {
 
     public BusinessModel fetchData(String entity, String pk , BusinessContext context ) {
         GenericDAO dao = getDAO();
-        return dao.getById(entity,pk);
+        MetadataEntity metadataEntity = metadataService.getMetadata(entity);
+        try {
+            return dao.getById(Class.forName(metadataEntity.getClassName()), Integer.parseInt(pk));
+        }catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 
