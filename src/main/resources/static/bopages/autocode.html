@@ -58,10 +58,13 @@ pageContent = getGenericList(entity);
                        fields = pageContent.fields
                        document.write('<th></th>');
                        for ( var i in fields) {
-                          var field = fields[i];
-                          if(field.PK == true)
-                             pkField=field.FieldName;
-                          document.write('<th>' +  field.LabelValue + '</th>');
+                           var field = fields[i];
+                           if(field.PK == true)
+                                    pkField=field.FieldName;
+                           if (field.ListPageBV != 'IGNORE')
+                           {
+                              document.write('<th>' +  field.LabelValue + '</th>');
+                           }
                        }
                        document.write('<th></th>');
                        </script>
@@ -78,13 +81,16 @@ pageContent = getGenericList(entity);
                                document.write('<td><input type="checkbox" id="checkbox2" name="options[]" value="' + singleRow[pkField] + '"></td>');
                                for ( var i in fields) {
                                   var field = fields[i];
+                                  if (field.ListPageBV != 'IGNORE')
+                                  {
                                   document.write('<td>' + singleRow[field.FieldName] + '</td>');
+                                  }
                                }
-                               document.write('<td>');
+                                document.write('<td>');
 								document.write('<a href="#editDataModel" class="edit" onClick = "populateData(\''+singleRow[pkField]+'\',\'' + entity + '\');" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>');
 								document.write('&nbsp');
 								document.write('<a href="#deleteDataModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>');
-							document.write('</td>');
+							    document.write('</td>');
                                 document.write("</tr>");
                         }
 
@@ -110,11 +116,15 @@ pageContent = getGenericList(entity);
                     fields = pageContent.fields
 
                     for ( var i in fields) {
-                    document.write('<div class="form-group">');
-                    var field = fields[i];
-                    document.write('<label>'+ field.LabelValue + ' </label>');
-                    document.write('<input id="txt' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
-                    document.write('</div>');
+                        var field = fields[i];
+                        if (field.AddPageBV != 'IGNORE')
+                        {
+                            document.write('<div class="form-group">');
+                            if (field.AddPageBV != 'HIDE')
+                                document.write('<label>'+ field.LabelValue + ' </label>');
+                            document.write('<input id="txt' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                            document.write('</div>');
+                        }
                     }
                     </script>
                     <!--
@@ -160,11 +170,15 @@ pageContent = getGenericList(entity);
                     fields = pageContent.fields
 
                     for ( var i in fields) {
-                    document.write('<div class="form-group">');
-                    var field = fields[i];
-                    document.write('<label>'+ field.LabelValue + ' </label>');
-                    document.write('<input id="txtE' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
-                    document.write('</div>');
+                        if (field.EditPageBV != 'IGNORE')
+                        {
+                            document.write('<div class="form-group">');
+                            var field = fields[i];
+                            if (field.EditPageBV != 'HIDE')
+                                 document.write('<label>'+ field.LabelValue + ' </label>');
+                            document.write('<input id="txtE' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                            document.write('</div>');
+                        }
                     }
                     </script>
                         <!--
