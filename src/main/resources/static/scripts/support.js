@@ -77,7 +77,19 @@ function populateData(pkValue,entity)
        var edCtrl = document.getElementById("frmgenericEdit").elements[i];
        var jsonTag = document.getElementById("frmgenericEdit").elements[i].getAttribute("data-json");
        if (jsonTag != '' && jsonTag != null )
-            edCtrl.value= snapsotresponse[jsonTag]
+       {
+            if (edCtrl.type == 'checkbox')
+            {
+                if (snapsotresponse[jsonTag] == true )
+                    edCtrl.checked = true;
+                else
+                    edCtrl.checked = false;
+
+            }else
+            {
+                edCtrl.value= snapsotresponse[jsonTag];
+            }
+       }
 
 
     }
@@ -109,10 +121,25 @@ let postContent= { };
 
 for (i =0 ; i < ct ;i ++)
 {
-   var propValue = document.getElementById("frmgenericEdit").elements[i].value;
-   var propTag = document.getElementById("frmgenericEdit").elements[i].getAttribute("data-json");
-   if (propTag != '' && propTag != null )
-        postContent[propTag] = propValue;
+    var ctrl = document.getElementById("frmgenericEdit").elements[i];
+   var propValue = ctrl.value;
+   var propTag = ctrl.getAttribute("data-json");
+
+    if (propTag != '' && propTag != null )
+    {
+       if(ctrl.type == 'checkbox')
+       {
+          if (ctrl.checked == true )
+             postContent[propTag] = 'true';
+          else
+            postContent[propTag] = 'false';
+       }else
+       {
+       postContent[propTag] = propValue;
+       }
+   }
+
+
 }
 console.log(postContent);
 console.log(entity);
@@ -150,10 +177,24 @@ ct = document.getElementById("frmgenericAdd").elements.length ;
 let postContent= { };
 for (i =0 ; i < ct ;i ++)
 {
-   var propValue = document.getElementById("frmgenericAdd").elements[i].value;
-   var propTag = document.getElementById("frmgenericAdd").elements[i].getAttribute("data-json");
-   if (propTag != '' && propTag != null )
-        postContent[propTag] = propValue;
+   var ctrl = document.getElementById("frmgenericAdd").elements[i];
+      var propValue = ctrl.value;
+      var propTag = ctrl.getAttribute("data-json");
+
+       if (propTag != '' && propTag != null )
+       {
+          if(ctrl.type == 'checkbox')
+          {
+             if (ctrl.checked == true )
+                postContent[propTag] = 'true';
+             else
+               postContent[propTag] = 'false';
+          }else
+          {
+          postContent[propTag] = propValue;
+          }
+      }
+
 }
 console.log(postContent);
 console.log(entity);

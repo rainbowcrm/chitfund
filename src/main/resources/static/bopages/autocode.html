@@ -83,7 +83,14 @@ pageContent = getGenericList(entity);
                                   var field = fields[i];
                                   if (field.ListPageBV != 'IGNORE')
                                   {
-                                  document.write('<td>' + singleRow[field.FieldName] + '</td>');
+                                    if (field.DisplayControl == 'CheckBox'){
+                                        if ( singleRow[field.FieldName] == true)
+                                             document.write('<td> &#10004 </td>');
+                                        else
+                                              document.write('<td></td>');
+                                    }else {
+                                        document.write('<td>' + singleRow[field.FieldName] + '</td>');
+                                      }
                                   }
                                }
                                 document.write('<td>');
@@ -121,8 +128,16 @@ pageContent = getGenericList(entity);
                         {
                             document.write('<div class="form-group">');
                             if (field.AddPageBV != 'HIDE')
+                            {
                                 document.write('<label>'+ field.LabelValue + ' </label>');
-                            document.write('<input id="txt' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                            }
+                            if (field.DisplayControl == 'CheckBox')
+                            {
+                                 document.write(' &nbsp; &nbsp; <input id="chk' + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag + '" >');
+                            }else
+                            {
+                                document.write('<input id="txt' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                            }
                             document.write('</div>');
                         }
                     }
@@ -175,8 +190,16 @@ pageContent = getGenericList(entity);
                             document.write('<div class="form-group">');
                             var field = fields[i];
                             if (field.EditPageBV != 'HIDE')
+                            {
                                  document.write('<label>'+ field.LabelValue + ' </label>');
-                            document.write('<input id="txtE' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                            }
+                            if (field.DisplayControl == 'CheckBox')
+                            {
+                                document.write('&nbsp; &nbsp; <input id="chkE' + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag+ '" >');
+                            } else
+                            {
+                                document.write('<input id="txtE' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                            }
                             document.write('</div>');
                         }
                     }

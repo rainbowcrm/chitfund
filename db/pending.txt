@@ -5,3 +5,4 @@
 5. Multi Lang Labels
 6. Fix Map
 7. Default Login Page
+8. checkbox in auto gen UI
