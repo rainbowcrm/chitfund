@@ -81,7 +81,7 @@ function populateData(pkValue,entity)
 
 
     }
-    alert('done');
+//    alert('done');
 
 }
 function setToken (request)
@@ -126,10 +126,10 @@ request.setRequestHeader("Content-type", "application/json");
 request.setRequestHeader("Access-Control-Allow-Origin", url);
      request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-         alert('success');
+        // alert('success');
         }else
         {
-         alert('error');
+        // alert('error');
         }
 
     };
@@ -167,10 +167,10 @@ request.setRequestHeader("Content-type", "application/json");
 request.setRequestHeader("Access-Control-Allow-Origin", url);
      request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-         alert('success');
+        // alert('success');
         }else
         {
-         alert('error');
+         // alert('error');
         }
 
     };

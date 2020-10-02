@@ -1,4 +1,4 @@
-package com.primus.entity;
+package com.primus.common;
 
 
 import com.primus.metadata.model.MetadataEntity;

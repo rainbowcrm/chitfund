@@ -64,6 +64,7 @@ public class MetadataEntity extends ModelObject {
     MetadataEntity parentEntity ;
     Collection<Field> fields ;
     String className;
+    String pkType ;
 
     @Id
     @Column(name = "ENTITY_NAME")
@@ -112,5 +113,14 @@ public class MetadataEntity extends ModelObject {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    @Column(name = "PK_TYPE")
+    public String getPkType() {
+        return pkType;
+    }
+
+    public void setPkType(String pkType) {
+        this.pkType = pkType;
     }
 }

@@ -26,7 +26,8 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
           http.authorizeRequests()
                   .anyRequest().authenticated().and().httpBasic().and().headers().frameOptions().sameOrigin().and().csrf()
-                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and().formLogin().loginPage("/bologin.html")
+                  .loginProcessingUrl("/bologin.html").permitAll();
 
 
     }

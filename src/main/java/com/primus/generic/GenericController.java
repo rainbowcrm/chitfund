@@ -1,9 +1,10 @@
 package com.primus.generic;
 
-import com.primus.entity.PrimusEntityFactory;
+import com.primus.common.PrimusEntityFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class GenericController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<Map> createObject(  @RequestBody Map<String,Object> input,@RequestParam  String entity)
     {
-        BusinessContext context = new BusinessContext();
+        BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
 
         String entityClass = primusEntityFactory.getEntityClass(entity);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
@@ -37,7 +38,7 @@ public class GenericController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<Map> updateObject(  @RequestBody Map<String,Object> input,@RequestParam  String entity)
     {
-        BusinessContext context = new BusinessContext();
+        BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
 
         String entityClass = primusEntityFactory.getEntityClass(entity);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);

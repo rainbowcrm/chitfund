@@ -1,11 +1,13 @@
 package com.primus.metadata;
 
+import com.primus.generic.BusinessContext;
 import com.primus.generic.BusinessModel;
 import com.primus.generic.GenericService;
 import com.primus.metadata.service.MetadataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +38,8 @@ public class CommonAPIController {
     public ResponseEntity<Map> getDataFromPK(@RequestParam String entity,  @RequestParam String pk)
     {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            String username = ((UserDetails)principal).getUsername();
-        } else {
-            String username = principal.toString();
-        }
-        BusinessModel model = genericService.fetchData(entity,pk,null);
+        BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
+        BusinessModel model = genericService.fetchData(entity,pk,context);
         Map ret = model.toMap() ;
         ResponseEntity responseEntity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  responseEntity;

@@ -22,10 +22,10 @@ public class GenericService {
     {
 
         GenericDAO dao = getDAO();
-       /* model.setCreatedDate(new java.util.Date());
+       model.setCreatedDate(new java.util.Date());
         model.setCreatedBy(context.getUser());
         model.setLastUpdatedBy(context.getUser());
-        model.setLastUpdateDate(new java.util.Date());*/
+        model.setLastUpdateDate(new java.util.Date());
         dao.create(model);
         //  Logger.logDebug("Object Created= " + object.toJSON() + "\n Context=" + productContext.toString(), this.getClass());
         return new TransactionResult();
@@ -58,7 +58,10 @@ public class GenericService {
         GenericDAO dao = getDAO();
         MetadataEntity metadataEntity = metadataService.getMetadata(entity);
         try {
-            return dao.getById(Class.forName(metadataEntity.getClassName()), Integer.parseInt(pk));
+            if (metadataEntity.getPkType().equalsIgnoreCase("ID")  || metadataEntity.getPkType().equalsIgnoreCase("INTEGER") )
+                return dao.getById(Class.forName(metadataEntity.getClassName()), Integer.parseInt(pk));
+            else
+                return dao.getById(Class.forName(metadataEntity.getClassName()), pk);
         }catch (Exception ex)
         {
             ex.printStackTrace();

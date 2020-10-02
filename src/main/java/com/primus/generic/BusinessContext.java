@@ -1,6 +1,7 @@
 package com.primus.generic;
 
 import com.techtrade.rads.framework.context.IRadsContext;
+import org.springframework.security.core.context.SecurityContext;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -8,14 +9,17 @@ import java.util.Map;
 
 public class BusinessContext implements IRadsContext, Serializable {
 
+    String user;
+    Locale locale = Locale.US;
 
     @Override
     public String getUser() {
-        return null;
+        return user;
     }
 
     @Override
     public void setUser(String s) {
+        this.user =s;
 
     }
 
@@ -56,6 +60,14 @@ public class BusinessContext implements IRadsContext, Serializable {
 
     @Override
     public void setLocale(Locale locale) {
+
+    }
+
+    public static BusinessContext createContext(SecurityContext securityContext)
+    {
+        BusinessContext context = new BusinessContext();
+        context.setUser((String)securityContext.getAuthentication().getPrincipal());
+        return context;
 
     }
 }
