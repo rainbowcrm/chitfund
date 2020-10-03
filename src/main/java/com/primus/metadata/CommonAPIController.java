@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin(origins = "https://localhost:20220", maxAge = 3600)
 @RequestMapping("/api/commonui")
@@ -26,9 +27,20 @@ public class CommonAPIController {
     GenericService genericService ;
 
     @RequestMapping(value = "/getPage", method = RequestMethod.GET)
-    public ResponseEntity<Map> getListPageMeta(@RequestParam String pageid)
+    public ResponseEntity<Map> getListPageMeta(@RequestParam String pageid, @RequestParam Optional<Integer> from , @RequestParam Optional<Integer> to )
     {
-        Map ret = metadataService.getPage(pageid);
+
+        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null));
+        ResponseEntity entity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
+        return  entity;
+
+    }
+
+    @RequestMapping(value = "/getListContent", method = RequestMethod.GET)
+    public ResponseEntity<Map> getListPageContent(@RequestParam String pageid,@RequestParam Optional<Integer> from , @RequestParam Optional<Integer> to)
+    {
+
+        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null));
         ResponseEntity entity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  entity;
 
@@ -38,8 +50,7 @@ public class CommonAPIController {
     public ResponseEntity<Map> getDataFromPK(@RequestParam String entity,  @RequestParam String pk)
     {
 
-        BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
-        BusinessModel model = genericService.fetchData(entity,pk,context);
+        BusinessModel model = genericService.fetchData(entity,pk);
         Map ret = model.toMap() ;
         ResponseEntity responseEntity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  responseEntity;
@@ -47,12 +58,5 @@ public class CommonAPIController {
     }
 
 
-    @RequestMapping(value = "/getCreatePage", method = RequestMethod.GET)
-    public ResponseEntity<Map> getCreatePageMeta(@RequestParam String pageid)
-    {
-        Map ret = metadataService.getPage(pageid);
-        ResponseEntity entity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
-        return  entity;
 
-    }
 }

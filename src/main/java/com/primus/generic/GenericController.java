@@ -52,8 +52,7 @@ public class GenericController {
     public ResponseEntity<List> listObjects(@RequestParam  String entity ,
                                             @RequestParam Integer fromRec  , @RequestParam Integer toRec )
     {
-        BusinessContext context = new BusinessContext();
-        List retValues = genericService.listData(entity,fromRec,toRec,null,null,context);
+        List retValues = genericService.listData(entity,fromRec,toRec,null,null);
         ResponseEntity responseEntity =  new ResponseEntity<List>(retValues, HttpStatus.OK);
         return responseEntity;
 

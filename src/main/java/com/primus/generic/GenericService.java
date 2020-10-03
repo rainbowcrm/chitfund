@@ -21,12 +21,11 @@ public class GenericService {
     public TransactionResult create ( BusinessModel model,BusinessContext context)
     {
 
-        GenericDAO dao = getDAO();
        model.setCreatedDate(new java.util.Date());
         model.setCreatedBy(context.getUser());
         model.setLastUpdatedBy(context.getUser());
         model.setLastUpdateDate(new java.util.Date());
-        dao.create(model);
+        genericDAO.create(model);
         //  Logger.logDebug("Object Created= " + object.toJSON() + "\n Context=" + productContext.toString(), this.getClass());
         return new TransactionResult();
     }
@@ -40,21 +39,25 @@ public class GenericService {
     @Transactional(propagation = Propagation.REQUIRED)
     public TransactionResult update(BusinessModel model,BusinessContext context) {
 
-        GenericDAO dao = getDAO();
+
 
         model.setLastUpdatedBy(context.getUser());
         model.setLastUpdateDate(new java.util.Date());
-        dao.update(model);
+        genericDAO.update(model);
         return new TransactionResult();
     }
 
+    public long getTotalRecordCount (String entity, String whereCondition )
+    {
+            return genericDAO.getTotalRecordCount(entity,whereCondition);
+    }
 
-    public List<BusinessModel> listData(String entity, int from , int to , String whereCondition, String orderby,BusinessContext context ) {
+    public List<BusinessModel> listData(String entity, int from , int to , String whereCondition, String orderby ) {
         GenericDAO dao = getDAO();
         return dao.listData(entity,from,to,whereCondition,null);
     }
 
-    public BusinessModel fetchData(String entity, String pk , BusinessContext context ) {
+    public BusinessModel fetchData(String entity, String pk  ) {
         GenericDAO dao = getDAO();
         MetadataEntity metadataEntity = metadataService.getMetadata(entity);
         try {

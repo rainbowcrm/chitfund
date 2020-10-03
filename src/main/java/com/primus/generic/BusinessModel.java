@@ -5,6 +5,7 @@ import com.techtrade.rads.framework.model.abstracts.ModelObject;
 import com.techtrade.rads.framework.utils.Utils;
 
 import javax.persistence.*;
+import javax.validation.ReportAsSingleViolation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -24,6 +25,7 @@ public abstract  class BusinessModel extends ModelObject {
         this.entity = entity;
     }
 
+    @RadsPropertySet(excludeFromMap = true,excludeFromJSON = true,excludeFromXML = true)
     public void setProperty(String property, Object value) throws InvocationTargetException, IllegalAccessException
     {
         Map<String, Method> allFields = new HashMap();
@@ -37,6 +39,7 @@ public abstract  class BusinessModel extends ModelObject {
     }
 
     @Transient
+    @RadsPropertySet(excludeFromMap = true,excludeFromJSON = true,excludeFromXML = true)
     public Object getProperty(String property) throws InvocationTargetException, IllegalAccessException
     {
         Map<String, Method> allFields = new HashMap();

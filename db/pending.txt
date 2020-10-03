@@ -3,6 +3,6 @@
 3. UI  Filter
 4. Pagination
 5. Multi Lang Labels
-6. Fix Map
+6. Fix Map **
 7. Default Login Page
-8. checkbox in auto gen UI
+8. checkbox in auto gen UI **

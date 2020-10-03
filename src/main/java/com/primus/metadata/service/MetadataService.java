@@ -1,5 +1,6 @@
 package com.primus.metadata.service;
 
+import com.primus.generic.BusinessContext;
 import com.primus.generic.BusinessModel;
 import com.primus.generic.GenericService;
 import com.primus.metadata.ServiceFactory;
@@ -19,9 +20,11 @@ public class MetadataService {
     @Autowired
     MetadataDAO metadataDAO;
 
-    public Map getPage(String entity)
+    public Map getPage(String entity, Integer from, Integer to)
     {
 
+        int fro = from!=null?from.intValue():0;
+        int toI= to!=null?to.intValue():12 ;
 
         GenericService genericService = (GenericService) ServiceFactory.services().instantiateObject("genericService") ;
         MetadataEntity metadataEntity =  null;
@@ -48,7 +51,32 @@ public class MetadataService {
         }
 
 
-        List <BusinessModel> entries  = genericService.listData(entity,0,9999,null,null,null);
+        List <BusinessModel> entries  = genericService.listData(entity,fro,toI,null,null);
+        for ( BusinessModel entry : entries )
+        {
+            data.add(entry.toMap());
+        }
+        ans.put("data",data);
+        long totalRec = genericService.getTotalRecordCount(entity,"");
+        ans.put("totalRecords",totalRec);
+        return ans;
+
+
+    }
+
+    public Map getListContent(String entity, Integer from, Integer to)
+    {
+
+
+        int fro = from!=null?from.intValue():0;
+        int toI= to!=null?to.intValue():12 ;
+
+        GenericService genericService = (GenericService) ServiceFactory.services().instantiateObject("genericService") ;
+
+
+        Map ans = new LinkedHashMap();
+        List<Map> data = new ArrayList<>();
+        List <BusinessModel> entries  = genericService.listData(entity,fro,toI,null,null);
         for ( BusinessModel entry : entries )
         {
             data.add(entry.toMap());

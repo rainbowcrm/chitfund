@@ -2,6 +2,7 @@ package com.primus.generic;
 
 import com.techtrade.rads.framework.context.IRadsContext;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 import java.util.Locale;
@@ -67,6 +68,14 @@ public class BusinessContext implements IRadsContext, Serializable {
     {
         BusinessContext context = new BusinessContext();
         context.setUser((String)securityContext.getAuthentication().getPrincipal());
+        return context;
+
+    }
+
+    public static BusinessContext createContext()
+    {
+        BusinessContext context = new BusinessContext();
+        context.setUser((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return context;
 
     }
