@@ -24,7 +24,7 @@ const urlParams = new URLSearchParams(queryString);
 const entity = urlParams.get('entity')
 console.log(entity);
 var currentPage = 0 ;
-var recordsPerPage = 12 ;
+var recordsPerPage = 10;
 
 pageContent = getGenericList(entity,currentPage,recordsPerPage);
 //pageContent = getGenericList('Brand');
@@ -221,31 +221,80 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
     <!-- pagination -->
     <nav>
         <ul class="pagination justify-content-left">
+            <script>
+             var totalRecords = pageContent.totalRecords;
+             var totalPages =Math.ceil( totalRecords/ recordsPerPage);
+
+              if ( totalPages > 10 )
+              {
+                document.write('<li class="page-item">');
+                document.write('<a href="#" class="page-link py-2 px-3">');
+                document.write('<input type="text" id="txtNavCtrl" maxlength="3" size="3">');
+                var ipCtrl = document.getElementById("txtNavCtrl");
+                ipCtrl.addEventListener("keyup", function(event) {
+                    if (event.keyCode === 13) {
+                       event.preventDefault();
+                       forceNav(entity,recordsPerPage,'tblDataList',pkField);
+                    }
+                });
+              }
+              document.write('</a>');
+              document.write('</li>');
+
+            </script>
+
             <li class="page-item">
-                <a href="#" class="page-link py-2 px-3">
+                <script>
+                    document.write('<a href="#" onclick = "forcePrevPageNav(\''+ entity + '\',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  class="page-link py-2 px-3">');
+                </script>
                     <span>&laquo;</span>
                 </a>
             </li>
             <script>
-                var totalRecords = pageContent.totalRecords;
-                var totalPages =Math.ceil( totalRecords/ recordsPerPage);
-                startPage = currentPage ;
-                for (var i = 1 ; i <= totalPages ; i ++ )
+
+
+                if ( totalPages <=10 )
                 {
-                       var active = (i==(currentPage+1))?'active':'';
-                        document.write('<li class="page-item">');
-                        //onclick = "reloadListWithContent(\''+ entity + '\',' + i +',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"
-                        document.write('<a href="#" onclick = "reloadListWithContent(\''+ entity + '\',' + (i-1) +',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  class="page-link py-2 px-3">');
-                        document.write(i);
-                        document.write('</a>');
-                        document.write('</li>');
+                    for (var i = 1 ; i <= totalPages ; i ++ )
+                    {
+                           var active = (i==(currentPage+1))?'active':'';
+                            document.write('<li id = "navListItem" name ="navListItem" class="page-item   '+ active + '">');
+                            document.write('<a href="#" onclick = "reloadListWithContent(\''+ entity + '\',' + (i-1) +',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  class="page-link py-2 px-3">');
+                            document.write(i);
+                            document.write('</a>');
+                            document.write('</li>');
+                    }
+                } else
+                {
+                    for (var i = 1 ; i <= 5 ; i ++ )
+                    {
+                           var active = (i==(currentPage+1))?'active':'';
+                            document.write('<li id = "navListItem" name ="navListItem" class="page-item   '+ active + '">');
+                            document.write('<a href="#" onclick = "reloadListWithContent(\''+ entity + '\',' + (i-1) +',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  class="page-link py-2 px-3">');
+                            document.write(i);
+                            document.write('</a>');
+                            document.write('</li>');
+                    }
+
+                    for (var i =  totalPages-5 ; i <= totalPages ; i ++ )
+                    {
+                           var active = (i==(currentPage+1))?'active':'';
+                            document.write('<li id = "navListItem" name ="navListItem" class="page-item   '+ active + '">');
+                            document.write('<a href="#" onclick = "reloadListWithContent(\''+ entity + '\',' + (i-1) +',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  class="page-link py-2 px-3">');
+                            document.write(i);
+                            document.write('</a>');
+                            document.write('</li>');
+                    }
+
                 }
 
             </script>
 
 
             <li class="page-item">
-                <a href="#" class="page-link py-2 px-3">
+                <script>
+                    document.write('<a href="#" onclick = "forceNextPageNav(\''+ entity + '\',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  class="page-link py-2 px-3">');
+                </script>
                     <span>&raquo;</span>
                 </a>
             </li>

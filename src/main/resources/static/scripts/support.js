@@ -267,11 +267,31 @@ function login()
        // alert(document.cookie);
     return false;
     }
+var lastClicked = 0;
+function forceNav(pageid,recordsPerPage,tableId,pkField)
+{
 
+    var pgEntered = document.getElementById("txtNavCtrl").value;
+    lastClicked =  pgEntered-1 ;
+    reloadListWithContent(pageid,lastClicked,recordsPerPage,tableId,pkField);
+}
+function forceNextPageNav(pageid,recordsPerPage,tableId,pkField)
+{
+    lastClicked ++ ;
+    reloadListWithContent(pageid,lastClicked,recordsPerPage,tableId,pkField);
+}
+
+function forcePrevPageNav(pageid,recordsPerPage,tableId,pkField)
+{
+
+    if (lastClicked >0 )
+            lastClicked -- ;
+    reloadListWithContent(pageid,lastClicked,recordsPerPage,tableId,pkField);
+}
 function reloadListWithContent(pageid,currentPage,recordsPerPage,tableId,pkField)
 {
     let request = new XMLHttpRequest () ;
-
+    lastClicked = currentPage;
     console.log(pageid);
     var from = currentPage * recordsPerPage;
     var to= from  + recordsPerPage;
@@ -283,6 +303,16 @@ function reloadListWithContent(pageid,currentPage,recordsPerPage,tableId,pkField
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Response from reloadListWithContent =" + request.responseText );
     reRenderTable(tableId,pageid,snapsotresponse.data,pkField);
+
+    var listElems = document.getElementsByName("navListItem") ;
+    for (i = 0; i < listElems.length ; i ++ )
+    {
+            if( i == currentPage)
+                listElems[i].className = "page-item  active";
+            else
+                listElems[i].className = "page-item";
+
+    }
 }
 
 
