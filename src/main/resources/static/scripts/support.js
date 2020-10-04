@@ -29,12 +29,15 @@ function getMenus()
        console.log("Responss   e =" + request.responseText );
         return  snapsotresponse;
 }
-function getGenericList(pageid)
+function getGenericList(pageid,currentPage,recordsPerPage)
 {
     let request = new XMLHttpRequest () ;
 
     console.log(pageid);
-    request.open("GET",url+'api/commonui/getPage?pageid='+ pageid,false);
+    var from = currentPage * recordsPerPage;
+    var to= from  + recordsPerPage;
+
+    request.open("GET",url+'api/commonui/getPage?pageid='+ pageid + "&from=" + from + "&to=" + to,false);
     request.setRequestHeader("Content-type", "application/json");
      setToken(request);
     request.send() ;
@@ -265,3 +268,60 @@ function login()
     return false;
     }
 
+function reloadListWithContent(pageid,currentPage,recordsPerPage,tableId,pkField)
+{
+    let request = new XMLHttpRequest () ;
+
+    console.log(pageid);
+    var from = currentPage * recordsPerPage;
+    var to= from  + recordsPerPage;
+
+    request.open("GET",url+'api/commonui/getListContent?pageid='+ pageid + "&from=" + from + "&to=" + to,false);
+    request.setRequestHeader("Content-type", "application/json");
+     setToken(request);
+    request.send() ;
+    var snapsotresponse  =   JSON.parse(request.responseText)  ;
+    console.log("Response from reloadListWithContent =" + request.responseText );
+    reRenderTable(tableId,pageid,snapsotresponse.data,pkField);
+}
+
+
+function reRenderTable(tableId,entity, data,pkField)
+{
+        var dataTable = document.getElementById(tableId);
+         console.log(dataTable.rows);
+        while (dataTable.rows.length > 1) {
+                console.log(dataTable.rows.length);
+                dataTable.deleteRow(dataTable.rows.length -1 );
+        }
+
+        for ( var i in data) {
+               singleRow=  data[i];
+               //innerContent = "<tr>";
+               innerContent = " ";
+               innerContent =  innerContent + '<td><input type="checkbox" id="checkbox2" name="options[]" value="' + singleRow[pkField] + '"></td>';
+               for ( var i in fields) {
+                  var field = fields[i];
+                  if (field.ListPageBV != 'IGNORE')
+                  {
+                    if (field.DisplayControl == 'CheckBox'){
+                        if ( singleRow[field.FieldName] == true)
+                             innerContent = innerContent + '<td> &#10004 </td>';
+                        else
+                              innerContent = innerContent + '<td></td>' ;
+                    }else {
+                        innerContent = innerContent + '<td>' + singleRow[field.FieldName] + '</td>';
+                      }
+                  }
+               }
+                innerContent = innerContent + '<td>';
+                innerContent = innerContent + '<a href="#editDataModel" class="edit" onClick = "populateData(\''+singleRow[pkField]+'\',\'' + entity + '\');" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>';
+                innerContent = innerContent + '&nbsp';
+                innerContent = innerContent + '<a href="#deleteDataModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>';
+                innerContent = innerContent + '</td>';
+             //   innerContent = innerContent + "</tr>";
+
+                var newrow = dataTable.insertRow();
+                newrow.innerHTML =  innerContent;
+            }
+}

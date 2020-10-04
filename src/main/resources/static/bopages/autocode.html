@@ -23,9 +23,10 @@ var queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const entity = urlParams.get('entity')
 console.log(entity);
+var currentPage = 0 ;
+var recordsPerPage = 12 ;
 
-
-pageContent = getGenericList(entity);
+pageContent = getGenericList(entity,currentPage,recordsPerPage);
 //pageContent = getGenericList('Brand');
 </script>
 <section>
@@ -49,7 +50,7 @@ pageContent = getGenericList(entity);
 
                 <div class="row align-items-center">
                 <div class="col-12 mb-4 mb-xl-0">
-               <table class="table table-striped bg-light text-left" >
+               <table id="tblDataList" class="table table-striped bg-light text-left" >
 
                    <thead>
                    <tr class="text-muted">
@@ -204,23 +205,7 @@ pageContent = getGenericList(entity);
                         }
                     }
                     </script>
-                        <!--
-                             <div class="form-group">
-                                 <label>Name</label>
-                                 <input type="text" class="form-control" required>
-                             </div>
-                             <div class="form-group">
-                                 <label>Email</label>
-                                 <input type="email" class="form-control" required>
-                             </div>
-                             <div class="form-group">
-                                 <label>Address</label>
-                                 <textarea class="form-control" required></textarea>
-                             </div>
-                             <div class="form-group">
-                                 <label>Phone</label>
-                                 <input type="text" class="form-control" required>
-                             </div>-->
+
                     </div>
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -241,21 +226,24 @@ pageContent = getGenericList(entity);
                     <span>&laquo;</span>
                 </a>
             </li>
-            <li class="page-item active">
-                <a href="#" class="page-link py-2 px-3">
-                    1
-                </a>
-            </li>
-            <li class="page-item">
-                <a href="#" class="page-link py-2 px-3">
-                    2
-                </a>
-            </li>
-            <li class="page-item">
-                <a href="#" class="page-link py-2 px-3">
-                    3
-                </a>
-            </li>
+            <script>
+                var totalRecords = pageContent.totalRecords;
+                var totalPages =Math.ceil( totalRecords/ recordsPerPage);
+                startPage = currentPage ;
+                for (var i = 1 ; i <= totalPages ; i ++ )
+                {
+                       var active = (i==(currentPage+1))?'active':'';
+                        document.write('<li class="page-item">');
+                        //onclick = "reloadListWithContent(\''+ entity + '\',' + i +',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"
+                        document.write('<a href="#" onclick = "reloadListWithContent(\''+ entity + '\',' + (i-1) +',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  class="page-link py-2 px-3">');
+                        document.write(i);
+                        document.write('</a>');
+                        document.write('</li>');
+                }
+
+            </script>
+
+
             <li class="page-item">
                 <a href="#" class="page-link py-2 px-3">
                     <span>&raquo;</span>
