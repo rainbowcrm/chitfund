@@ -38,6 +38,7 @@ public class MetadataService {
             metadataEntity = cachedMetadata.get(entity);
         }
 
+        StringBuffer whereCondition = new StringBuffer("");
 
         Map ans = new LinkedHashMap();
         List<Map> fields = new ArrayList<>();
@@ -45,13 +46,22 @@ public class MetadataService {
         if (metadataEntity != null ) {
             metadataEntity.getFields().forEach( field ->{
                 fields.add(field.toMap());
+                if (filter != null && filter.containsKey(field.getJsonTag()))
+                {
+                    if(!whereCondition.toString().equals(""))
+                        whereCondition.append(" and ");
+                    else
+                        whereCondition.append(" where ");
+                    whereCondition.append(field.getJsonTag() + "='" + filter.get(field.getJsonTag()) + "'");
+                }
+
 
             });
             ans.put("fields", fields);
         }
 
 
-        List <BusinessModel> entries  = genericService.listData(entity,fro,toI,null,null);
+        List <BusinessModel> entries  = genericService.listData(entity,fro,toI,whereCondition.toString(),null);
         for ( BusinessModel entry : entries )
         {
             data.add(entry.toMap());

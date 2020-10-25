@@ -117,6 +117,27 @@ function setToken (request)
    }
 }
 
+function clearFilter( pageid,recordsPerPage,tableId,pkField)
+{
+    ct = document.getElementById("frmFilter").elements.length ;
+    let postContent= { };
+
+    for (i =0 ; i < ct ;i ++)
+    {
+           var ctrl = document.getElementById("frmFilter").elements[i];
+            if(ctrl.type == 'checkbox')
+           {
+              ctrl.checked = false;
+           }else
+           {
+                ctrl.value = ''
+           }
+
+    }
+    document.getElementById("hdnAppliedFilter").value = '';
+    reloadListWithContent(pageid,0,recordsPerPage,tableId,pkField);
+}
+
 function applyFilter( pageid,recordsPerPage,tableId,pkField)
 {
     ct = document.getElementById("frmFilter").elements.length ;
@@ -280,7 +301,7 @@ function login()
      request.setRequestHeader("Content-type", "application/json");
         request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-         window.location.href = './bopages/bolanding.html'
+         window.location.href = './bopages/bosimplelanding.html'
         }else
         {
          document.getElementById("erromessage").innerHTML ="Authorization failed";
@@ -331,7 +352,7 @@ function reloadListWithContent(pageid,currentPage,recordsPerPage,tableId,pkField
     if( hdnContent != '' )
         postContent = JSON.parse(hdnContent);
 
-    alert(postContent);
+    //alert(postContent);
     //postContent = {"code" :"CD102"};
     request.open("POST",url+'api/commonui/getListContent?pageid='+ pageid + "&from=" + from + "&to=" + to,false);
     request.setRequestHeader("Content-type", "application/json");

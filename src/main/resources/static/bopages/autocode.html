@@ -24,7 +24,7 @@ const urlParams = new URLSearchParams(queryString);
 const entity = urlParams.get('entity')
 console.log(entity);
 var currentPage = 0 ;
-var recordsPerPage = 2;
+var recordsPerPage = 6;
 
 pageContent = getGenericList(entity,currentPage,recordsPerPage);
 //pageContent = getGenericList('Brand');
@@ -65,7 +65,7 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
            <div class="row">
                <div class="col-md-4 col-sm-6 col-6">
                     <span> Code </span>
-                    <input type ="text" data-json = "code" id ="txtCode"/>
+                    <input type ="text" data-json = "Code" id ="txtCode"/>
                </div>
                <div class="col-md-4 col-sm-6 col-6">
                    <span> Name </span>
@@ -75,8 +75,10 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
            <br>
                <script>
                     document.write('<button type="button" class="btn btn-primary" onclick = "applyFilter(\''+ entity + '\',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  >Apply</button>');
+                    document.write(' &nbsp; &nbsp; &nbsp;');
+                    document.write('<button type="button" class="btn btn-secondary" onclick = "clearFilter(\''+ entity + '\',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  >Clear</button>');
                 </script>
-           <button type="button" class="btn btn-secondary">Cancel</button>
+
            </form>
            <input type="hidden" id="hdnAppliedFilter"/>
        </div>
