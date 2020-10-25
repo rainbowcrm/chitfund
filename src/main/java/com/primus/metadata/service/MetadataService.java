@@ -20,7 +20,7 @@ public class MetadataService {
     @Autowired
     MetadataDAO metadataDAO;
 
-    public Map getPage(String entity, Integer from, Integer to)
+    public Map getPage(String entity, Integer from, Integer to,Map filter)
     {
 
         int fro = from!=null?from.intValue():0;

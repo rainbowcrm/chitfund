@@ -30,17 +30,20 @@ public class CommonAPIController {
     public ResponseEntity<Map> getListPageMeta(@RequestParam String pageid, @RequestParam Optional<Integer> from , @RequestParam Optional<Integer> to )
     {
 
-        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null));
+        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null),null);
         ResponseEntity entity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  entity;
 
     }
 
-    @RequestMapping(value = "/getListContent", method = RequestMethod.GET)
-    public ResponseEntity<Map> getListPageContent(@RequestParam String pageid,@RequestParam Optional<Integer> from , @RequestParam Optional<Integer> to)
+    @RequestMapping(value = "/getListContent", method = RequestMethod.POST)
+    public ResponseEntity<Map> getListPageContent(@RequestParam String pageid,
+                                                  @RequestParam Optional<Integer> from ,
+                                                  @RequestParam Optional<Integer> to,
+                                                  @RequestBody Optional<Map> filter)
     {
 
-        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null));
+        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null),filter.orElse(null));
         ResponseEntity entity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  entity;
 

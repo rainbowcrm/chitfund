@@ -24,11 +24,20 @@ const urlParams = new URLSearchParams(queryString);
 const entity = urlParams.get('entity')
 console.log(entity);
 var currentPage = 0 ;
-var recordsPerPage = 10;
+var recordsPerPage = 2;
 
 pageContent = getGenericList(entity,currentPage,recordsPerPage);
 //pageContent = getGenericList('Brand');
-</script>
+ pkField = '';
+ fields = pageContent.fields;
+ for ( var i in fields)
+ {
+    var field = fields[i];
+    if(field.PK == true)
+            pkField=field.FieldName;
+
+ }
+    </script>
 <section>
    <div class="container-fluid">
 
@@ -36,10 +45,10 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
            <div class="table-wrapper">
                <div class="table-title">
                    <div class="row">
-                       <div class="col-md-9 col-6">
+                       <div class="col-md-8 col-sm-6 col-6">
                            <h2>Manage <b></b></h2>
                        </div>
-                       <div class="col-md-3 col-6 right-aligned" style="text-align:right">
+                       <div class="col-md-4 col-sm-6 col-6 right-aligned" style="text-align:right">
                            <a href="#addNewData" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>New <script>document.write(entity) </script></span></a>
                            &nbsp;
                            <a href="#deleteData" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
@@ -47,6 +56,31 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
                    </div>
                </div>
            </div>
+
+       <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Filter</button>
+
+       <div id="demo" class="collapse">
+           <form id="frmFilter" >
+           <br>
+           <div class="row">
+               <div class="col-md-4 col-sm-6 col-6">
+                    <span> Code </span>
+                    <input type ="text" data-json = "code" id ="txtCode"/>
+               </div>
+               <div class="col-md-4 col-sm-6 col-6">
+                   <span> Name </span>
+                   <input type ="text"  data-json = "Name" id ="txtName"/>
+               </div>
+           </div>
+           <br>
+               <script>
+                    document.write('<button type="button" class="btn btn-primary" onclick = "applyFilter(\''+ entity + '\',' + recordsPerPage + ',\'tblDataList\',\''+ pkField+ '\');"  >Apply</button>');
+                </script>
+           <button type="button" class="btn btn-secondary">Cancel</button>
+           </form>
+           <input type="hidden" id="hdnAppliedFilter"/>
+       </div>
+       <br>
 
                 <div class="row align-items-center">
                 <div class="col-12 mb-4 mb-xl-0">

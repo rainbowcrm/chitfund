@@ -117,6 +117,37 @@ function setToken (request)
    }
 }
 
+function applyFilter( pageid,recordsPerPage,tableId,pkField)
+{
+    ct = document.getElementById("frmFilter").elements.length ;
+    let postContent= { };
+
+    for (i =0 ; i < ct ;i ++)
+    {
+           var ctrl = document.getElementById("frmFilter").elements[i];
+           var propValue = ctrl.value;
+           var propTag = ctrl.getAttribute("data-json");
+            if (propValue != '' && propValue != null )
+            {
+              if(ctrl.type == 'checkbox')
+               {
+                  if (ctrl.checked == true )
+                     postContent[propTag] = 'true';
+                  else
+                    postContent[propTag] = 'false';
+               }else
+               {
+               postContent[propTag] = propValue;
+               }
+            }
+    }
+    document.getElementById("hdnAppliedFilter").value = JSON.stringify(postContent);
+    console.log(postContent);
+
+    reloadListWithContent(pageid,0,recordsPerPage,tableId,pkField);
+}
+
+
 function updateData(entity)
 {
 ct = document.getElementById("frmgenericEdit").elements.length ;
@@ -124,7 +155,7 @@ let postContent= { };
 
 for (i =0 ; i < ct ;i ++)
 {
-    var ctrl = document.getElementById("frmgenericEdit").elements[i];
+   var ctrl = document.getElementById("frmgenericEdit").elements[i];
    var propValue = ctrl.value;
    var propTag = ctrl.getAttribute("data-json");
 
@@ -295,11 +326,17 @@ function reloadListWithContent(pageid,currentPage,recordsPerPage,tableId,pkField
     console.log(pageid);
     var from = currentPage * recordsPerPage;
     var to= from  + recordsPerPage;
+    let hdnContent= document.getElementById("hdnAppliedFilter").value;
+    postContent = {} ;
+    if( hdnContent != '' )
+        postContent = JSON.parse(hdnContent);
 
-    request.open("GET",url+'api/commonui/getListContent?pageid='+ pageid + "&from=" + from + "&to=" + to,false);
+    alert(postContent);
+    //postContent = {"code" :"CD102"};
+    request.open("POST",url+'api/commonui/getListContent?pageid='+ pageid + "&from=" + from + "&to=" + to,false);
     request.setRequestHeader("Content-type", "application/json");
      setToken(request);
-    request.send() ;
+    request.send(JSON.stringify(postContent),true) ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Response from reloadListWithContent =" + request.responseText );
     reRenderTable(tableId,pageid,snapsotresponse.data,pkField);
