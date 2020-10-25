@@ -84,12 +84,21 @@ public class Field extends ModelObject {
     Boolean isPK;
     Boolean isBK;
     Boolean isMandatory;
+    Boolean isShowInFilter;
 
     String listPageBV;
     String addPageBV;
     String editPageBV;
 
 
+    @Column(name = "SHOW_INFILTER")
+    public Boolean isShowInFilter() {
+        return isShowInFilter;
+    }
+
+    public void setShowInFilter(Boolean showInFilter) {
+        isShowInFilter = showInFilter;
+    }
 
     @Column(name = "UI_LABEL_VALUE")
     public String getLabelValue() {

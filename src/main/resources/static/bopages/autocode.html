@@ -63,14 +63,36 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
            <form id="frmFilter" >
            <br>
            <div class="row">
-               <div class="col-md-4 col-sm-6 col-6">
+               <script>
+                fields = pageContent.fields;
+                for ( var i in fields) {
+                           var field = fields[i];
+                           if(field.ShowInFilter == true )
+                           {
+                            document.write('<div class="col-md-4 col-sm-6 col-6">');
+                            document.write('<span>' + field.LabelValue + '</span>');
+                            if (field.DisplayControl == 'CheckBox')
+                            {
+                                 document.write(' &nbsp; &nbsp; <input id="chkFL' + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag + '" >');
+                            }else
+                            {
+                                document.write('<input id="txtFL' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" >');
+                            }
+                            document.write('</div>');
+                           }
+                }
+
+
+               </script>
+
+               <!-- <div class="col-md-4 col-sm-6 col-6">
                     <span> Code </span>
                     <input type ="text" data-json = "Code" id ="txtCode"/>
                </div>
                <div class="col-md-4 col-sm-6 col-6">
                    <span> Name </span>
                    <input type ="text"  data-json = "Name" id ="txtName"/>
-               </div>
+               </div> -->
            </div>
            <br>
                <script>
