@@ -28,6 +28,7 @@ public class GenericController {
         BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
 
         String entityClass = primusEntityFactory.getEntityClass(entity);
+        context.setCurrentEntity(entity);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
         genericService.create(model,context);
         ResponseEntity responseEntity =  new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
@@ -39,7 +40,7 @@ public class GenericController {
     public ResponseEntity<Map> updateObject(  @RequestBody Map<String,Object> input,@RequestParam  String entity)
     {
         BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
-
+        context.setCurrentEntity(entity);
         String entityClass = primusEntityFactory.getEntityClass(entity);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
         genericService.update(model,context);

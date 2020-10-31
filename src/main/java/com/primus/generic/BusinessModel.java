@@ -46,7 +46,7 @@ public abstract  class BusinessModel extends ModelObject {
         Method[] allMethods = this.getClass().getMethods();
         for(int i = 0; i < allMethods.length; ++i) {
             Method currMethod = allMethods[i];
-            if (("set" + Utils.initupper(property)).equals(currMethod.getName())) {
+            if (("get" + Utils.initupper(property)).equals(currMethod.getName())) {
                 return currMethod.invoke(this);
             }
         }

@@ -21,18 +21,20 @@ public class GenericService {
     GenericDAO genericDAO;
 
     public TransactionResult create(BusinessModel model, BusinessContext context) {
+        try {
+            IValidator currentValidator = getValidator();
+            TransactionResult result = currentValidator.basicValidation(model, context);
+            if (result.hasErrors()) {
+                return result;
+            }
 
-        IValidator currentValidator  = getValidator() ;
-        TransactionResult result = currentValidator.basicValidation(model,context);
-        if( result.hasErrors())
+            result = currentValidator.advancedValidation(model, context);
+            if (result.hasErrors()) {
+                return result;
+            }
+        }catch (Exception ex)
         {
-            return result ;
-        }
 
-        result = currentValidator.advancedValidation(model,context);
-        if( result.hasErrors())
-        {
-            return result ;
         }
 
         model.setCreatedDate(new java.util.Date());

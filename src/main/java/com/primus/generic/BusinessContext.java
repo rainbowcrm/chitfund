@@ -12,6 +12,15 @@ public class BusinessContext implements IRadsContext, Serializable {
 
     String user;
     Locale locale = Locale.US;
+    String currentEntity ;
+
+    public String getCurrentEntity() {
+        return currentEntity;
+    }
+
+    public void setCurrentEntity(String currentEntity) {
+        this.currentEntity = currentEntity;
+    }
 
     @Override
     public String getUser() {

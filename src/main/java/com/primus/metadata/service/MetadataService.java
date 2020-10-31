@@ -77,13 +77,9 @@ public class MetadataService {
     public Map getListContent(String entity, Integer from, Integer to)
     {
 
-
         int fro = from!=null?from.intValue():0;
         int toI= to!=null?to.intValue():12 ;
-
         GenericService genericService = (GenericService) ServiceFactory.services().instantiateObject("genericService") ;
-
-
         Map ans = new LinkedHashMap();
         List<Map> data = new ArrayList<>();
         List <BusinessModel> entries  = genericService.listData(entity,fro,toI,null,null);

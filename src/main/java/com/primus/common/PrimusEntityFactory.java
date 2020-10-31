@@ -17,4 +17,6 @@ public class PrimusEntityFactory {
         MetadataEntity metadataEntity = metadataService.getMetadata(entityName);
         return metadataEntity.getClassName() ;
     }
+
+
 }

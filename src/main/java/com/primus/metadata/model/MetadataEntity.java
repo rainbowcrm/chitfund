@@ -12,59 +12,19 @@ import java.util.Date;
 public class MetadataEntity extends ModelObject {
 
 
- /*   protected Date lastUpdateDate;
-    protected Date createdDate;
-    protected String createdBy;
-    protected String lastUpdatedBy;*/
 
 
 
-/*
-    @Column(name = "CREATED_DATE")
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-
-    @Column(name = "LAST_UPDATED_DATE")
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
-
-    @Column(name = "CREATED_BY")
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    @Column(name = "LAST_UPDATED_BY")
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }*/
 
     String name;
     boolean hasSub ;
     MetadataEntity parentEntity ;
     Collection<Field> fields ;
     String className;
+    String serviceName;
     String pkType ;
+    Collection<ValidationRule> validationRules ;
+
 
     @Id
     @Column(name = "ENTITY_NAME")
@@ -115,6 +75,15 @@ public class MetadataEntity extends ModelObject {
         this.className = className;
     }
 
+    @Column(name = "SERVICENAME")
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
     @Column(name = "PK_TYPE")
     public String getPkType() {
         return pkType;
@@ -122,5 +91,14 @@ public class MetadataEntity extends ModelObject {
 
     public void setPkType(String pkType) {
         this.pkType = pkType;
+    }
+
+    @Transient
+    public Collection<ValidationRule> getValidationRules() {
+        return validationRules;
+    }
+
+    public void setValidationRules(Collection<ValidationRule> validationRules) {
+        this.validationRules = validationRules;
     }
 }
