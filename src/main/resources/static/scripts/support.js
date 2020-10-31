@@ -14,32 +14,32 @@ sessionUser = new SessionUser('','','')
  url = "https://localhost:20220/"
 //--disable-web-security --disable-gpu --user-data-dir=~/chromeTem
 
-
+function formRequest(methodType,api)
+{
+      let request = new XMLHttpRequest () ;
+      request.open(methodType,api,false);
+      request.setRequestHeader("Content-type", "application/json");
+      request.setRequestHeader("Access-Control-Allow-Origin", url);
+      return request ;
+}
 
 
 function getMenus()
 {
-     let request = new XMLHttpRequest () ;
-
-     request.open("GET",url+'api/application/getMenus',false);
-     request.setRequestHeader("Content-type", "application/json");
-        setToken(request);
-      request.send() ;
-       var snapsotresponse  =   JSON.parse(request.responseText)  ;
-       console.log("Responss   e =" + request.responseText );
-        return  snapsotresponse;
+     let request = formRequest("GET",url+'api/application/getMenus');
+     setToken(request);
+     request.send() ;
+     var snapsotresponse  =   JSON.parse(request.responseText)  ;
+     console.log("Responss   e =" + request.responseText );
+     return  snapsotresponse;
 }
 function getGenericList(pageid,currentPage,recordsPerPage)
 {
-    let request = new XMLHttpRequest () ;
-
     console.log(pageid);
     var from = currentPage * recordsPerPage;
     var to= from  + recordsPerPage;
-
-    request.open("GET",url+'api/commonui/getPage?pageid='+ pageid + "&from=" + from + "&to=" + to,false);
-    request.setRequestHeader("Content-type", "application/json");
-     setToken(request);
+    let request = formRequest("GET",url+'api/commonui/getPage?pageid='+ pageid + "&from=" + from + "&to=" + to);
+    setToken(request);
     request.send() ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Responss   e =" + request.responseText );
@@ -49,26 +49,20 @@ function getGenericList(pageid,currentPage,recordsPerPage)
 
 function getPageCreate(pageid)
 {
-    let request = new XMLHttpRequest () ;
-
-    request.open("GET",url+'api/commonui/getPage?pageid='+ pageid,false);
-    request.setRequestHeader("Content-type", "application/json");
-     setToken(request);
+    let request = formRequest("GET",url+'api/commonui/getPage?pageid='+ pageid);
+    setToken(request);
     request.send() ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Response =" + request.responseText );
-     return  snapsotresponse;
+    return  snapsotresponse;
 
 }
 
 function populateData(pkValue,entity)
 {
 
-    let request = new XMLHttpRequest () ;
-
     fullurl = url + 'api/commonui/getDataFromPK?entity=' + entity + "&pk=" + pkValue;
-    request.open("GET",fullurl,false);
-    request.setRequestHeader("Content-type", "application/json");
+    let request = formRequest("GET",fullurl,false);
     request.send() ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Response =" + request.responseText );
@@ -200,12 +194,9 @@ console.log(postContent);
 console.log(entity);
 
 fullurl = url + 'api/generic/update?entity=' + entity ;
-let request = new XMLHttpRequest () ;
-request.open("POST",fullurl,false);
+let request = formRequest("POST",fullurl);
 setToken(request);
 
-request.setRequestHeader("Content-type", "application/json");
-request.setRequestHeader("Access-Control-Allow-Origin", url);
      request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
         // alert('success');
@@ -255,18 +246,17 @@ console.log(postContent);
 console.log(entity);
 
 fullurl = url + 'api/generic/create?entity=' + entity ;
-let request = new XMLHttpRequest () ;
-request.open("POST",fullurl,false);
+let request = formRequest("POST",fullurl);
 setToken(request);
-
-request.setRequestHeader("Content-type", "application/json");
-request.setRequestHeader("Access-Control-Allow-Origin", url);
      request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-        // alert('success');
+                alert('success');
+                return true;
         }else
         {
-         // alert('error');
+            var saveResponse  =   JSON.parse(request.responseText)  ;
+            console.log(saveResponse);
+            Event.stopPropagation();
         }
 
     };
@@ -275,7 +265,7 @@ request.setRequestHeader("Access-Control-Allow-Origin", url);
        request.send(JSON.stringify(postContent),true) ;
     }catch(err)
     {
-     document.getElementById("erromessage").innerHTML ="Authorization failed";
+     document.getElementById("erromessage").innerHTML ="could not send message";
     }
 return false;
 }
@@ -342,7 +332,6 @@ function forcePrevPageNav(pageid,recordsPerPage,tableId,pkField)
 }
 function reloadListWithContent(pageid,currentPage,recordsPerPage,tableId,pkField)
 {
-    let request = new XMLHttpRequest () ;
     lastClicked = currentPage;
     console.log(pageid);
     var from = currentPage * recordsPerPage;
@@ -354,9 +343,8 @@ function reloadListWithContent(pageid,currentPage,recordsPerPage,tableId,pkField
 
     //alert(postContent);
     //postContent = {"code" :"CD102"};
-    request.open("POST",url+'api/commonui/getListContent?pageid='+ pageid + "&from=" + from + "&to=" + to,false);
-    request.setRequestHeader("Content-type", "application/json");
-     setToken(request);
+    let request = formRequest("POST",url+'api/commonui/getListContent?pageid='+ pageid + "&from=" + from + "&to=" + to);
+    setToken(request);
     request.send(JSON.stringify(postContent),true) ;
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Response from reloadListWithContent =" + request.responseText );
@@ -412,4 +400,27 @@ function reRenderTable(tableId,entity, data,pkField)
                 var newrow = dataTable.insertRow();
                 newrow.innerHTML =  innerContent;
             }
+}
+
+function renderControls(fields, prefixId )
+{
+    for ( var i in fields) {
+        var field = fields[i];
+        if ((prefixId == 'A' && field.AddPageBV != 'IGNORE') || (prefixId == 'Ed' && field.EditPageBV != 'IGNORE')  )
+        {
+            document.write('<div class="form-group">');
+            if ((prefixId == 'A' && field.AddPageBV != 'HIDE') || (prefixId == 'Ed' && field.EditPageBV != 'HIDE') )
+            {
+                document.write('<label>'+ field.LabelValue + ' </label>');
+            }
+            if (field.DisplayControl == 'CheckBox')
+            {
+                 document.write(' &nbsp; &nbsp; <input id="chk' + prefixId + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag + '" >');
+            }else
+            {
+                document.write('<input id="txt' + prefixId + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
+            }
+            document.write('</div>');
+        }
+    }
 }

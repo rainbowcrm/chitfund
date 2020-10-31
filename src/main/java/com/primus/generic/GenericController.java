@@ -1,12 +1,15 @@
 package com.primus.generic;
 
 import com.primus.common.PrimusEntityFactory;
+import com.techtrade.rads.framework.model.abstracts.RadsError;
+import com.techtrade.rads.framework.model.transaction.TransactionResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,9 +33,20 @@ public class GenericController {
         String entityClass = primusEntityFactory.getEntityClass(entity);
         context.setCurrentEntity(entity);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
-        genericService.create(model,context);
-        ResponseEntity responseEntity =  new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
-        return responseEntity;
+        TransactionResult result = genericService.create(model,context);
+        if (!result.hasErrors()) {
+            ResponseEntity responseEntity = new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
+            return responseEntity;
+        }else
+        {
+            Map errorMap = new LinkedHashMap();
+            for (RadsError error : result.getErrors()) {
+                errorMap.put(error.getCode(),error.getMessage()) ;
+            }
+            ResponseEntity responseEntity = new ResponseEntity<Map>(errorMap, HttpStatus.BAD_REQUEST);
+            return responseEntity ;
+
+        }
 
     }
 

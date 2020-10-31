@@ -180,26 +180,8 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
                     <div class="modal-body">
                     <script>
                     fields = pageContent.fields
+                    renderControls(fields,'A');
 
-                    for ( var i in fields) {
-                        var field = fields[i];
-                        if (field.AddPageBV != 'IGNORE')
-                        {
-                            document.write('<div class="form-group">');
-                            if (field.AddPageBV != 'HIDE')
-                            {
-                                document.write('<label>'+ field.LabelValue + ' </label>');
-                            }
-                            if (field.DisplayControl == 'CheckBox')
-                            {
-                                 document.write(' &nbsp; &nbsp; <input id="chk' + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag + '" >');
-                            }else
-                            {
-                                document.write('<input id="txt' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
-                            }
-                            document.write('</div>');
-                        }
-                    }
                     </script>
                     <!--
                          <div class="form-group">
@@ -242,26 +224,7 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
                     <div class="modal-body">
                         <script>
                     fields = pageContent.fields
-
-                    for ( var i in fields) {
-                        if (field.EditPageBV != 'IGNORE')
-                        {
-                            document.write('<div class="form-group">');
-                            var field = fields[i];
-                            if (field.EditPageBV != 'HIDE')
-                            {
-                                 document.write('<label>'+ field.LabelValue + ' </label>');
-                            }
-                            if (field.DisplayControl == 'CheckBox')
-                            {
-                                document.write('&nbsp; &nbsp; <input id="chkE' + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag+ '" >');
-                            } else
-                            {
-                                document.write('<input id="txtE' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
-                            }
-                            document.write('</div>');
-                        }
-                    }
+                    renderControls(fields,'Ed');
                     </script>
 
                     </div>
@@ -269,7 +232,6 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         <script>
                             document.write('<input type="button" class="btn btn-success" data-dismiss="modal" onclick="updateData(\''+entity+'\');" value="Update">');
-
                         </script>
                     </div>
                 </form>
@@ -282,7 +244,6 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
             <script>
              var totalRecords = pageContent.totalRecords;
              var totalPages =Math.ceil( totalRecords/ recordsPerPage);
-
               if ( totalPages > 10 )
               {
                 document.write('<li class="page-item">');

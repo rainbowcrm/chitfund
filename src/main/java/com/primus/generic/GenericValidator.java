@@ -59,7 +59,7 @@ public class GenericValidator implements IValidator {
                }
                if (validationRule.getValidationType().equals(ValidationRule.ValidationType.UNIQUE)) {
                    List<BusinessModel> fetchedValues=  currentService.listData(context.getCurrentEntity(),0,99999,
-                           validationRule.getField() + "='" + fieldValue + "'",null);
+                           " where " + validationRule.getField() + "='" + fieldValue + "'",null);
                    if ( !CollectionUtils.isEmpty(fetchedValues) && fetchedValues.get(0).getId() != model.getId())
                    {
                        result.addError(
@@ -79,6 +79,6 @@ public class GenericValidator implements IValidator {
         {
             return new TransactionResult(TransactionResult.Result.SUCCESS);
         }
-        return null;
+        return new TransactionResult(TransactionResult.Result.SUCCESS);
     }
 }
