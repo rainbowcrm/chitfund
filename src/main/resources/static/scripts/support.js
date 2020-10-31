@@ -67,12 +67,12 @@ function populateData(pkValue,entity)
     var snapsotresponse  =   JSON.parse(request.responseText)  ;
     console.log("Response =" + request.responseText );
 
-    ct = document.getElementById("frmgenericEdit").elements.length ;
+    ct = $("#frmgenericEdit")[0].elements.length ;
     let postContent= { };
     for (i =0 ; i < ct ;i ++)
     {
-       var edCtrl = document.getElementById("frmgenericEdit").elements[i];
-       var jsonTag = document.getElementById("frmgenericEdit").elements[i].getAttribute("data-json");
+       var edCtrl = $("#frmgenericEdit")[0].elements[i];
+       var jsonTag = edCtrl.getAttribute("data-json");
        if (jsonTag != '' && jsonTag != null )
        {
             if (edCtrl.type == 'checkbox')
@@ -113,12 +113,12 @@ function setToken (request)
 
 function clearFilter( pageid,recordsPerPage,tableId,pkField)
 {
-    ct = document.getElementById("frmFilter").elements.length ;
+    ct = $("#frmFilter")[0].elements.length ;
     let postContent= { };
 
     for (i =0 ; i < ct ;i ++)
     {
-           var ctrl = document.getElementById("frmFilter").elements[i];
+           var ctrl = $("#frmFilter")[0].elements[i];
             if(ctrl.type == 'checkbox')
            {
               ctrl.checked = false;
@@ -128,18 +128,18 @@ function clearFilter( pageid,recordsPerPage,tableId,pkField)
            }
 
     }
-    document.getElementById("hdnAppliedFilter").value = '';
+    $("#hdnAppliedFilter")[0].value = '';
     reloadListWithContent(pageid,0,recordsPerPage,tableId,pkField);
 }
 
 function applyFilter( pageid,recordsPerPage,tableId,pkField)
 {
-    ct = document.getElementById("frmFilter").elements.length ;
+    ct = $("#frmFilter")[0].elements.length ;
     let postContent= { };
 
     for (i =0 ; i < ct ;i ++)
     {
-           var ctrl = document.getElementById("frmFilter").elements[i];
+           var ctrl = $("#frmFilter")[0].elements[i];
            var propValue = ctrl.value;
            var propTag = ctrl.getAttribute("data-json");
             if (propValue != '' && propValue != null )
@@ -156,7 +156,7 @@ function applyFilter( pageid,recordsPerPage,tableId,pkField)
                }
             }
     }
-    document.getElementById("hdnAppliedFilter").value = JSON.stringify(postContent);
+    $("#hdnAppliedFilter")[0].value = JSON.stringify(postContent);
     console.log(postContent);
 
     reloadListWithContent(pageid,0,recordsPerPage,tableId,pkField);
@@ -165,12 +165,12 @@ function applyFilter( pageid,recordsPerPage,tableId,pkField)
 
 function updateData(entity)
 {
-ct = document.getElementById("frmgenericEdit").elements.length ;
+ct = $("#frmgenericEdit")[0].elements.length ;
 let postContent= { };
 
 for (i =0 ; i < ct ;i ++)
 {
-   var ctrl = document.getElementById("frmgenericEdit").elements[i];
+   var ctrl = $("#frmgenericEdit")[0].elements[i];
    var propValue = ctrl.value;
    var propTag = ctrl.getAttribute("data-json");
 
@@ -211,19 +211,19 @@ setToken(request);
        request.send(JSON.stringify(postContent),true) ;
     }catch(err)
     {
-     document.getElementById("erromessage").innerHTML ="Authorization failed";
+     $("#erromessage")[0].innerHTML ="Authorization failed";
     }
 return false;
 }
 
 
-function saveData(entity)
+function saveData(entity,event)
 {
-ct = document.getElementById("frmgenericAdd").elements.length ;
+ct = $("#frmgenericAdd")[0].elements.length ;
 let postContent= { };
 for (i =0 ; i < ct ;i ++)
 {
-   var ctrl = document.getElementById("frmgenericAdd").elements[i];
+   var ctrl = $("#frmgenericAdd")[0].elements[i];
       var propValue = ctrl.value;
       var propTag = ctrl.getAttribute("data-json");
 
@@ -256,7 +256,8 @@ setToken(request);
         {
             var saveResponse  =   JSON.parse(request.responseText)  ;
             console.log(saveResponse);
-            Event.stopPropagation();
+            event.preventDefault();
+            event.stopPropagation();
         }
 
     };
@@ -265,7 +266,7 @@ setToken(request);
        request.send(JSON.stringify(postContent),true) ;
     }catch(err)
     {
-     document.getElementById("erromessage").innerHTML ="could not send message";
+     $("#erromessage")[0].innerHTML ="could not send message";
     }
 return false;
 }
@@ -273,12 +274,12 @@ return false;
 
 function showPage(pageName)
 {
- document.getElementById("ifrmContent").src=pageName;
+ $("#ifrmContent")[0].src=pageName;
 }
 function login()
     {
-        var name = document.getElementById("txtname").value ;
-        var pwd =  document.getElementById("txtpwd").value ;
+        var name = $("#txtname")[0].value ;
+        var pwd =  $("#txtpwd")[0].value ;
     var data = {
         "userId" : name,
         "pwd" : pwd
@@ -294,7 +295,7 @@ function login()
          window.location.href = './bopages/bosimplelanding.html'
         }else
         {
-         document.getElementById("erromessage").innerHTML ="Authorization failed";
+         $("#erromessage")[0].innerHTML ="Authorization failed";
         }
     };
 
@@ -304,7 +305,7 @@ function login()
 
     }catch(err)
     {
-     document.getElementById("erromessage").innerHTML ="Authorization failed";
+     $("#erromessage")[0].innerHTML ="Authorization failed";
     }
        // alert(document.cookie);
     return false;
@@ -313,7 +314,7 @@ var lastClicked = 0;
 function forceNav(pageid,recordsPerPage,tableId,pkField)
 {
 
-    var pgEntered = document.getElementById("txtNavCtrl").value;
+    var pgEntered = $("#txtNavCtrl")[0].value;
     lastClicked =  pgEntered-1 ;
     reloadListWithContent(pageid,lastClicked,recordsPerPage,tableId,pkField);
 }
@@ -406,7 +407,23 @@ function renderControls(fields, prefixId )
 {
     for ( var i in fields) {
         var field = fields[i];
-        if ((prefixId == 'A' && field.AddPageBV != 'IGNORE') || (prefixId == 'Ed' && field.EditPageBV != 'IGNORE')  )
+        if (prefixId == "FL")
+        {
+            if(field.ShowInFilter == true )
+           {
+                document.write('<div class="col-md-4 col-sm-6 col-6">');
+                document.write('<span>' + field.LabelValue + '</span>');
+                if (field.DisplayControl == 'CheckBox')
+                {
+                     document.write(' &nbsp; &nbsp; <input id="chkFL' + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag + '" >');
+                }else
+                {
+                    document.write('<input id="txtFL' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" >');
+                }
+                document.write('</div>');
+           }
+
+        }else if ((prefixId == 'A' && field.AddPageBV != 'IGNORE') || (prefixId == 'Ed' && field.EditPageBV != 'IGNORE')  )
         {
             document.write('<div class="form-group">');
             if ((prefixId == 'A' && field.AddPageBV != 'HIDE') || (prefixId == 'Ed' && field.EditPageBV != 'HIDE') )

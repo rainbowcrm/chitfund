@@ -65,23 +65,7 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
            <div class="row">
                <script>
                 fields = pageContent.fields;
-                for ( var i in fields) {
-                           var field = fields[i];
-                           if(field.ShowInFilter == true )
-                           {
-                            document.write('<div class="col-md-4 col-sm-6 col-6">');
-                            document.write('<span>' + field.LabelValue + '</span>');
-                            if (field.DisplayControl == 'CheckBox')
-                            {
-                                 document.write(' &nbsp; &nbsp; <input id="chkFL' + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag + '" >');
-                            }else
-                            {
-                                document.write('<input id="txtFL' + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" >');
-                            }
-                            document.write('</div>');
-                           }
-                }
-
+                renderControls(fields,'FL');
 
                </script>
 
@@ -204,7 +188,11 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
                     <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                         <script>
-                            document.write('<input type="button" class="btn btn-success" data-dismiss="modal" onclick="saveData(\''+entity+'\');" value="Add">');
+                            document.write('<input type="button" id = "btnSaveNew" class="btn btn-success" data-dismiss="modal"  value="Add">');
+                            // onclick="saveData(\''+entity+'\');"
+                              $('#btnSaveNew').off('click').click(function(clickEvent){
+                                    saveData(entity,clickEvent);
+                              });
 
                         </script>
                     </div>
