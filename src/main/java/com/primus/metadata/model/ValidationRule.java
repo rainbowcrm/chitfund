@@ -1,28 +1,98 @@
 package com.primus.metadata.model;
 
+import com.techtrade.rads.framework.annotations.RadsPropertySet;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name ="ENTITY_VALIDATIONS")
 public class ValidationRule {
 
     public enum ValidationType {
         MANDATORY, UNIQUE, REFERRED ,  RANGED  , NON_ZERO_POSITIVE, ONLY_PRESENT_FUTUREDATE , ONLY_PASTDATE
     }
 
+    protected Date lastUpdateDate;
+    protected Date createdDate;
+    protected String createdBy;
+    protected String lastUpdatedBy;
 
-    MetadataEntity parentEntity;
+
+    protected int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    @RadsPropertySet(isPK = true)
+    public int getId() {
+        return id;
+
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Column(name = "CREATED_DATE")
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+
+    @Column(name = "LAST_UPDATED_DATE")
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    @Column(name = "CREATED_BY")
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Column(name = "LAST_UPDATED_BY")
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+
+    MetadataEntity entity;
     ValidationType validationType ;
     String field;
-
     String referredEntity;
     String referredField;
 
-
-    public MetadataEntity getParentEntity() {
-        return parentEntity;
+    @ManyToOne(cascade= CascadeType.DETACH)
+    @JoinColumn(name  ="ENTITY_NAME")
+    @RadsPropertySet(excludeFromXML = true,excludeFromMap = true,excludeFromJSON = true)
+    public MetadataEntity getEntity() {
+        return entity;
     }
 
-    public void setParentEntity(MetadataEntity parentEntity) {
-        this.parentEntity = parentEntity;
+    public void setEntity(MetadataEntity entity) {
+        this.entity = entity;
     }
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "VALIDATION_TYPE")
     public ValidationType getValidationType() {
         return validationType;
     }
@@ -31,6 +101,7 @@ public class ValidationRule {
         this.validationType = validationType;
     }
 
+    @Column(name = "FIELD_NAME")
     public String getField() {
         return field;
     }
@@ -39,6 +110,7 @@ public class ValidationRule {
         this.field = field;
     }
 
+    @Column(name = "REF_ENTITY")
     public String getReferredEntity() {
         return referredEntity;
     }
@@ -47,6 +119,7 @@ public class ValidationRule {
         this.referredEntity = referredEntity;
     }
 
+    @Column(name = "REF_FIELD")
     public String getReferredField() {
         return referredField;
     }

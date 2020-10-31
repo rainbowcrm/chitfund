@@ -1,8 +1,10 @@
 package com.primus.generic;
 
 import com.primus.common.IValidator;
+import com.primus.metadata.ServiceFactory;
 import com.primus.metadata.model.MetadataEntity;
 import com.primus.metadata.service.MetadataService;
+import com.techtrade.rads.framework.model.abstracts.RadsError;
 import com.techtrade.rads.framework.model.transaction.TransactionResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +24,7 @@ public class GenericService {
 
     public TransactionResult create(BusinessModel model, BusinessContext context) {
         try {
-            IValidator currentValidator = getValidator();
+            IValidator currentValidator = getValidator(context.getCurrentEntity());
             TransactionResult result = currentValidator.basicValidation(model, context);
             if (result.hasErrors()) {
                 return result;
@@ -34,7 +36,9 @@ public class GenericService {
             }
         }catch (Exception ex)
         {
-
+            TransactionResult result = new TransactionResult(TransactionResult.Result.FAILURE);
+            result.addError(new RadsError("","system error! please contact Admin"));
+            return result;
         }
 
         model.setCreatedDate(new java.util.Date());
@@ -42,7 +46,7 @@ public class GenericService {
         model.setLastUpdatedBy(context.getUser());
         model.setLastUpdateDate(new java.util.Date());
         genericDAO.create(model);
-        //  Logger.logDebug("Object Created= " + object.toJSON() + "\n Context=" + productContext.toString(), this.getClass());
+        //Logger.logDebug("Object Created= " + object.toJSON() + "\n Context=" + productContext.toString(), this.getClass());
         return new TransactionResult();
     }
 
@@ -85,8 +89,11 @@ public class GenericService {
     }
 
 
-    protected IValidator getValidator()
+    protected IValidator getValidator(String entity)
     {
-        return null;
+        MetadataEntity metadataEntity = metadataService.getMetadata(entity) ;
+        String validator = metadataEntity.getValidatorName();
+        IValidator iValidator = (IValidator) ServiceFactory.services().instantiateObject(validator);
+        return iValidator;
     }
 }

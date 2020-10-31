@@ -1,6 +1,7 @@
 package com.primus.metadata;
 
 import com.primus.generic.GenericService;
+import com.primus.generic.GenericValidator;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +14,8 @@ public class ServiceFactory  implements ApplicationContextAware {
     @Autowired
     GenericService genericService ;
 
+    @Autowired
+    GenericValidator genericValidator ;
 
 
 
@@ -20,6 +23,10 @@ public class ServiceFactory  implements ApplicationContextAware {
     {
         if("genericService".equalsIgnoreCase(obj))
             return genericService ;
+        if("genericValidator".equalsIgnoreCase(obj))
+            return genericValidator ;
+
+
         return genericService;
     }
 

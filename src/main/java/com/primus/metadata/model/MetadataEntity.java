@@ -22,6 +22,7 @@ public class MetadataEntity extends ModelObject {
     Collection<Field> fields ;
     String className;
     String serviceName;
+    String validatorName;
     String pkType ;
     Collection<ValidationRule> validationRules ;
 
@@ -84,6 +85,15 @@ public class MetadataEntity extends ModelObject {
         this.serviceName = serviceName;
     }
 
+    @Column(name = "VALIDATORNAME")
+    public String getValidatorName() {
+        return validatorName;
+    }
+
+    public void setValidatorName(String validatorName) {
+        this.validatorName = validatorName;
+    }
+
     @Column(name = "PK_TYPE")
     public String getPkType() {
         return pkType;
@@ -93,7 +103,8 @@ public class MetadataEntity extends ModelObject {
         this.pkType = pkType;
     }
 
-    @Transient
+    @RadsPropertySet(excludeFromMap = true, excludeFromXML = true  , excludeFromJSON =  true)
+    @OneToMany(cascade= CascadeType.ALL, mappedBy = "entity")
     public Collection<ValidationRule> getValidationRules() {
         return validationRules;
     }
