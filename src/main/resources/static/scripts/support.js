@@ -244,7 +244,7 @@ for (i =0 ; i < ct ;i ++)
 }
 console.log(postContent);
 console.log(entity);
-
+$('#errorSectionAdd')[0].innerHTML = '';
 fullurl = url + 'api/generic/create?entity=' + entity ;
 let request = formRequest("POST",fullurl);
 setToken(request);
@@ -256,6 +256,11 @@ setToken(request);
         {
             var saveResponse  =   JSON.parse(request.responseText)  ;
             console.log(saveResponse);
+            errors = saveResponse.errors ;
+            for (var i in errors) {
+                        var error = errors[i];
+                        $('#errorSectionAdd')[0].innerHTML = $('#errorSectionAdd')[0].innerHTML + error.message  + "<br>" ;
+            }
             event.preventDefault();
             event.stopPropagation();
         }

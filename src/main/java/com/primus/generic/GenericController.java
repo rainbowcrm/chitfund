@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:20220", maxAge = 3600)
 @RequestMapping("/api/generic")
@@ -40,9 +38,15 @@ public class GenericController {
         }else
         {
             Map errorMap = new LinkedHashMap();
+            List errorsLs = new ArrayList();
             for (RadsError error : result.getErrors()) {
-                errorMap.put(error.getCode(),error.getMessage()) ;
+                Map mp = new HashMap();
+                mp.put("code",error.getCode());
+                mp.put("message",error.getMessage());
+                errorsLs.add(mp);
             }
+
+            errorMap.put("errors",errorsLs) ;
             ResponseEntity responseEntity = new ResponseEntity<Map>(errorMap, HttpStatus.BAD_REQUEST);
             return responseEntity ;
 

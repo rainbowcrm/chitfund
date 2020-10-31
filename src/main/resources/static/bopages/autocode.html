@@ -162,6 +162,9 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     </div>
                     <div class="modal-body">
+                        <div class="form-group alert alert-danger" >
+                            <span id="errorSectionAdd" >  </span>
+                        </div>
                     <script>
                     fields = pageContent.fields
                     renderControls(fields,'A');
