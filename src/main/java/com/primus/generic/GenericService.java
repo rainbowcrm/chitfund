@@ -1,5 +1,6 @@
 package com.primus.generic;
 
+import com.primus.common.IValidator;
 import com.primus.metadata.model.MetadataEntity;
 import com.primus.metadata.service.MetadataService;
 import com.techtrade.rads.framework.model.transaction.TransactionResult;
@@ -14,14 +15,27 @@ import java.util.List;
 public class GenericService {
 
     @Autowired
-    MetadataService metadataService ;
+    MetadataService metadataService;
 
     @Autowired
     GenericDAO genericDAO;
-    public TransactionResult create ( BusinessModel model,BusinessContext context)
-    {
 
-       model.setCreatedDate(new java.util.Date());
+    public TransactionResult create(BusinessModel model, BusinessContext context) {
+
+        IValidator currentValidator  = getValidator() ;
+        TransactionResult result = currentValidator.basicValidation(model,context);
+        if( result.hasErrors())
+        {
+            return result ;
+        }
+
+        result = currentValidator.advancedValidation(model,context);
+        if( result.hasErrors())
+        {
+            return result ;
+        }
+
+        model.setCreatedDate(new java.util.Date());
         model.setCreatedBy(context.getUser());
         model.setLastUpdatedBy(context.getUser());
         model.setLastUpdateDate(new java.util.Date());
@@ -31,14 +45,12 @@ public class GenericService {
     }
 
 
-    public GenericDAO getDAO()
-    {
+    public GenericDAO getDAO() {
         return genericDAO;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public TransactionResult update(BusinessModel model,BusinessContext context) {
-
+    public TransactionResult update(BusinessModel model, BusinessContext context) {
 
 
         model.setLastUpdatedBy(context.getUser());
@@ -47,30 +59,32 @@ public class GenericService {
         return new TransactionResult();
     }
 
-    public long getTotalRecordCount (String entity, String whereCondition )
-    {
-            return genericDAO.getTotalRecordCount(entity,whereCondition);
+    public long getTotalRecordCount(String entity, String whereCondition) {
+        return genericDAO.getTotalRecordCount(entity, whereCondition);
     }
 
-    public List<BusinessModel> listData(String entity, int from , int to , String whereCondition, String orderby ) {
+    public List<BusinessModel> listData(String entity, int from, int to, String whereCondition, String orderby) {
         GenericDAO dao = getDAO();
-        return dao.listData(entity,from,to,whereCondition,null);
+        return dao.listData(entity, from, to, whereCondition, null);
     }
 
-    public BusinessModel fetchData(String entity, String pk  ) {
+    public BusinessModel fetchData(String entity, String pk) {
         GenericDAO dao = getDAO();
         MetadataEntity metadataEntity = metadataService.getMetadata(entity);
         try {
-            if (metadataEntity.getPkType().equalsIgnoreCase("ID")  || metadataEntity.getPkType().equalsIgnoreCase("INTEGER") )
+            if (metadataEntity.getPkType().equalsIgnoreCase("ID") || metadataEntity.getPkType().equalsIgnoreCase("INTEGER"))
                 return dao.getById(Class.forName(metadataEntity.getClassName()), Integer.parseInt(pk));
             else
                 return dao.getById(Class.forName(metadataEntity.getClassName()), pk);
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
     }
 
 
+    protected IValidator getValidator()
+    {
+        return null;
+    }
 }
