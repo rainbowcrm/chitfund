@@ -61,9 +61,26 @@ public class GenericController {
         context.setCurrentEntity(entity);
         String entityClass = primusEntityFactory.getEntityClass(entity);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
-        genericService.update(model,context);
-        ResponseEntity responseEntity =  new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
-        return responseEntity;
+        TransactionResult result = genericService.update(model,context);
+        if (!result.hasErrors()) {
+            ResponseEntity responseEntity = new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
+            return responseEntity;
+        }else
+        {
+            Map errorMap = new LinkedHashMap();
+            List errorsLs = new ArrayList();
+            for (RadsError error : result.getErrors()) {
+                Map mp = new HashMap();
+                mp.put("code",error.getCode());
+                mp.put("message",error.getMessage());
+                errorsLs.add(mp);
+            }
+
+            errorMap.put("errors",errorsLs) ;
+            ResponseEntity responseEntity = new ResponseEntity<Map>(errorMap, HttpStatus.BAD_REQUEST);
+            return responseEntity ;
+
+        }
 
     }
 

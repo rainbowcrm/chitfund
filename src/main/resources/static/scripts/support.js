@@ -244,13 +244,14 @@ for (i =0 ; i < ct ;i ++)
 }
 console.log(postContent);
 console.log(entity);
-$('#errorSectionAdd')[0].innerHTML = '';
+$('#addErrorDiv')[0].innerHTML = '';
+$("#addErrorDiv").hide();
 fullurl = url + 'api/generic/create?entity=' + entity ;
 let request = formRequest("POST",fullurl);
 setToken(request);
      request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-                alert('success');
+
                 return true;
         }else
         {
@@ -259,10 +260,11 @@ setToken(request);
             errors = saveResponse.errors ;
             for (var i in errors) {
                         var error = errors[i];
-                        $('#errorSectionAdd')[0].innerHTML = $('#errorSectionAdd')[0].innerHTML + error.message  + "<br>" ;
+                        $('#addErrorDiv')[0].innerHTML = $('#addErrorDiv')[0].innerHTML + error.message  + "<br>" ;
             }
             event.preventDefault();
             event.stopPropagation();
+            $("#addErrorDiv").show(100);
         }
 
     };

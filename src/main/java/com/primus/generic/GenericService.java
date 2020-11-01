@@ -22,25 +22,35 @@ public class GenericService {
     @Autowired
     GenericDAO genericDAO;
 
-    public TransactionResult create(BusinessModel model, BusinessContext context) {
+    protected  TransactionResult validate(BusinessModel model, BusinessContext context)
+    {
         try {
-            IValidator currentValidator = getValidator(context.getCurrentEntity());
-            TransactionResult result = currentValidator.basicValidation(model, context);
-            if (result.hasErrors()) {
-                return result;
-            }
+        IValidator currentValidator = getValidator(context.getCurrentEntity());
+        TransactionResult result = currentValidator.basicValidation(model, context);
+        if (result.hasErrors()) {
+            return result;
+        }
 
-            result = currentValidator.advancedValidation(model, context);
-            if (result.hasErrors()) {
-                return result;
-            }
+        result = currentValidator.advancedValidation(model, context);
+        if (result.hasErrors()) {
+            return result;
+        }
+        return result;
         }catch (Exception ex)
         {
             TransactionResult result = new TransactionResult(TransactionResult.Result.FAILURE);
             result.addError(new RadsError("","system error! please contact Admin"));
             return result;
         }
+    }
 
+
+    public TransactionResult create(BusinessModel model, BusinessContext context) {
+
+        TransactionResult result = validate(model,context);
+        if (result.hasErrors()) {
+            return result;
+        }
         model.setCreatedDate(new java.util.Date());
         model.setCreatedBy(context.getUser());
         model.setLastUpdatedBy(context.getUser());
@@ -57,8 +67,10 @@ public class GenericService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public TransactionResult update(BusinessModel model, BusinessContext context) {
-
-
+        TransactionResult result = validate(model,context);
+        if (result.hasErrors()) {
+            return result;
+        }
         model.setLastUpdatedBy(context.getUser());
         model.setLastUpdateDate(new java.util.Date());
         genericDAO.update(model);
