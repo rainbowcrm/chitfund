@@ -163,7 +163,7 @@ function applyFilter( pageid,recordsPerPage,tableId,pkField)
 }
 
 
-function updateData(entity)
+function updateData(entity,event)
 {
 ct = $("#frmgenericEdit")[0].elements.length ;
 let postContent= { };
@@ -192,7 +192,8 @@ for (i =0 ; i < ct ;i ++)
 }
 console.log(postContent);
 console.log(entity);
-
+$('#editErrorDiv')[0].innerHTML = '';
+$("#editErrorDiv").hide();
 fullurl = url + 'api/generic/update?entity=' + entity ;
 let request = formRequest("POST",fullurl);
 setToken(request);
@@ -202,7 +203,17 @@ setToken(request);
         // alert('success');
         }else
         {
-        // alert('error');
+            var saveResponse  =   JSON.parse(request.responseText)  ;
+            console.log(saveResponse);
+            errors = saveResponse.errors ;
+            for (var i in errors) {
+                        var error = errors[i];
+                        $('#editErrorDiv')[0].innerHTML = $('#editErrorDiv')[0].innerHTML + error.message  + "<br>" ;
+            }
+            event.preventDefault();
+            event.stopPropagation();
+            $("#editErrorDiv").show(100);
+
         }
 
     };
