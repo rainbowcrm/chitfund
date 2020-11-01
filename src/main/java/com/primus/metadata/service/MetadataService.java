@@ -1,10 +1,12 @@
 package com.primus.metadata.service;
 
+import com.primus.common.FiniteValues;
 import com.primus.generic.BusinessContext;
 import com.primus.generic.BusinessModel;
 import com.primus.generic.GenericService;
 import com.primus.metadata.ServiceFactory;
 import com.primus.metadata.dao.MetadataDAO;
+import com.primus.metadata.model.Field;
 import com.primus.metadata.model.MetadataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,17 @@ public class MetadataService {
     @Autowired
     MetadataDAO metadataDAO;
 
+
+    private void populateDropDownContents(Field field)
+    {
+         if (field.getPopulator().contains("FiniteValues"))
+         {
+             String fvGroup = field.getPopulator().substring(13,field.getPopulator().length());
+             List<Map<String,String>> dropDownValues = FiniteValues.getFiniteValues(fvGroup);
+             field.setDropDownValues(dropDownValues);
+         }
+
+    }
     public Map getPage(String entity, Integer from, Integer to,Map filter)
     {
 
@@ -54,10 +67,9 @@ public class MetadataService {
                         whereCondition.append(" where ");
                     whereCondition.append(field.getJsonTag() + "='" + filter.get(field.getJsonTag()) + "'");
                 }
-
-
-
-
+                if (field.getDisplayControl().equalsIgnoreCase("DropDown"))  {
+                    populateDropDownContents(field);
+                }
             });
             ans.put("fields", fields);
         }

@@ -1,7 +1,6 @@
 package com.primus.common;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class FiniteValues {
 
@@ -17,8 +16,17 @@ public class FiniteValues {
 
     }
 
-    public  static Map<String,String>  getFiniteValues(String groupCode )
+    public  static List<Map<String,String>> getFiniteValues(String groupCode )
     {
-        return FVMap.get(groupCode);
+        List<Map<String,String>> ret = new ArrayList<>();
+        Map<String,String> keyVal = FVMap.get(groupCode);
+        keyVal.entrySet().forEach( entry -> {
+            Map<String,String> tempMap = new HashMap<>();
+            tempMap.put("Code",entry.getKey());
+            tempMap.put("Value",entry.getValue());
+            ret.add(tempMap);
+        });
+
+        return ret;
     }
 }

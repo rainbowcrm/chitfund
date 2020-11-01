@@ -13,7 +13,7 @@ public class SchemeType extends BusinessModel {
     String code;
     String description;
     String frequency ;
-    double pricemony;
+    double priceMoney;
     int noParticipants;
 
     @Column(name  ="CODE")
@@ -44,12 +44,12 @@ public class SchemeType extends BusinessModel {
     }
 
     @Column(name  ="PRICE_MONEY")
-    public double getPricemoney() {
-        return pricemony;
+    public double getPriceMoney() {
+        return priceMoney;
     }
 
-    public void setPricemoney(double pricemony) {
-        this.pricemony = pricemony;
+    public void setPriceMoney(double priceMoney) {
+        this.priceMoney = priceMoney;
     }
 
 

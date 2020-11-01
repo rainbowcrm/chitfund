@@ -6,6 +6,8 @@ import com.techtrade.rads.framework.model.abstracts.ModelObject;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name ="ENTITY_FIELDS")
@@ -76,6 +78,7 @@ public class Field extends ModelObject {
     String labelKey;
     String jsonTag ;
     String populator;
+    List<Map<String,String>> dropDownValues;
     MetadataEntity entity ;
     String labelValue;
     String displayControl;
@@ -229,5 +232,14 @@ public class Field extends ModelObject {
 
     public void setEditPageBV(String editPageBV) {
         this.editPageBV = editPageBV;
+    }
+
+    @Transient
+    public List<Map<String,String>> getDropDownValues() {
+        return dropDownValues;
+    }
+
+    public void setDropDownValues(List<Map<String,String>> dropDownValues) {
+        this.dropDownValues = dropDownValues;
     }
 }

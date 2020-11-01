@@ -451,7 +451,18 @@ function renderControls(fields, prefixId )
             if (field.DisplayControl == 'CheckBox')
             {
                  document.write(' &nbsp; &nbsp; <input id="chk' + prefixId + field.FieldName + '" type="Checkbox"  data-json="'+ field.JsonTag + '" >');
-            }else
+            } else if (field.DisplayControl == 'DropDown')
+            {
+                document.write('<select id="lst' + prefixId + field.FieldName + '"   data-json="'+ field.JsonTag+ '" class="form-control" required>');
+                console.log(field.DropDownValues) ;
+                    for ( var j in field.DropDownValues)
+                    {
+                            let entry = field.DropDownValues[j];
+                            document.write('<option value="' + entry.Code + '">' + entry.Value + '</option>');
+                    }
+                document.write('</select>')
+            }
+            else
             {
                 document.write('<input id="txt' + prefixId + field.FieldName + '" type="'+field.DisplayControl+'"  data-json="'+ field.JsonTag+ '" class="form-control" required>');
             }
