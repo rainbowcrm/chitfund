@@ -79,6 +79,7 @@ public class ValidationRule {
     String field;
     String referredEntity;
     String referredField;
+    String params;
 
     @ManyToOne(cascade= CascadeType.DETACH)
     @JoinColumn(name  ="ENTITY_NAME")
@@ -128,5 +129,12 @@ public class ValidationRule {
         this.referredField = referredField;
     }
 
+    @Column(name = "PARAMS")
+    public String getParams() {
+        return params;
+    }
 
+    public void setParams(String params) {
+        this.params = params;
+    }
 }

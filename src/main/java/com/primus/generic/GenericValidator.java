@@ -53,7 +53,7 @@ public class GenericValidator implements IValidator {
                    if ( fieldValue == null || StringUtils.isEmpty(fieldValue) )
                    {
                          result.addError(
-                                 getErrorforCode(context.getLocale(),ErrorCodes.FIELD_MANDATORY,validationRule.getField()));
+                                 getErrorforCode(context.getLocale(),ErrorCodes.FIELD_MANDATORY,validationRule.getParams()));
                          result.setResult(TransactionResult.Result.FAILURE);
                    }
                }
@@ -63,7 +63,7 @@ public class GenericValidator implements IValidator {
                    if ( !CollectionUtils.isEmpty(fetchedValues) && fetchedValues.get(0).getId() != model.getId())
                    {
                        result.addError(
-                               getErrorforCode(context.getLocale(),ErrorCodes.FIELD_NOTUNIQUE,validationRule.getField()));
+                               getErrorforCode(context.getLocale(),ErrorCodes.FIELD_NOTUNIQUE,validationRule.getParams()));
                        result.setResult(TransactionResult.Result.FAILURE);
                    }
                }
