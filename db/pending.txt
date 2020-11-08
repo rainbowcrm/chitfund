@@ -1,7 +1,7 @@
 1. Version - **
 2. Security filter , context, permissions *
-3. UI  Filter
-4. Pagination
+3. UI  Filter **
+4. Pagination **
 5. Multi Lang Labels
 6. Fix Map **
 7. Default Login Page

@@ -1,10 +1,9 @@
 package com.primus.schemetype.model;
 
+import com.primus.common.finitevalue.model.FiniteValue;
 import com.primus.generic.BusinessModel;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name ="SCHEME_TYPES")
@@ -12,7 +11,7 @@ public class SchemeType extends BusinessModel {
 
     String code;
     String description;
-    String frequency ;
+    FiniteValue frequency ;
     double priceMoney;
     int noParticipants;
 
@@ -34,14 +33,19 @@ public class SchemeType extends BusinessModel {
         this.description = description;
     }
 
-    @Column(name  ="FREQUENCY")
-    public String getFrequency() {
+    @ManyToOne(cascade= CascadeType.DETACH)
+    @JoinColumn(name  ="FREQUENCY")
+    public FiniteValue getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(String frequency) {
+    public void setFrequency(FiniteValue frequency) {
         this.frequency = frequency;
     }
+
+
+
+
 
     @Column(name  ="PRICE_MONEY")
     public double getPriceMoney() {
