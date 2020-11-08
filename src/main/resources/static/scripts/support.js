@@ -173,20 +173,7 @@ for (i =0 ; i < ct ;i ++)
    var ctrl = $("#frmgenericEdit")[0].elements[i];
    var propValue = ctrl.value;
    var propTag = ctrl.getAttribute("data-json");
-
-    if (propTag != '' && propTag != null )
-    {
-       if(ctrl.type == 'checkbox')
-       {
-          if (ctrl.checked == true )
-             postContent[propTag] = 'true';
-          else
-            postContent[propTag] = 'false';
-       }else
-       {
-       postContent[propTag] = propValue;
-       }
-   }
+   setJsonValueForSave(postContent,propTag,propValue,ctrl);
 
 
 }
@@ -441,9 +428,7 @@ function renderListTable(fields,data, pkField)
     console.log(fields);
     for ( var i in data) {
        singleRow=  data[i];
-
        console.log(singleRow);
-
        document.write("<tr>");
        document.write('<td><input type="checkbox" id="checkbox2" name="options[]" value="' + singleRow[pkField] + '"></td>');
        for ( var i in fields) {
@@ -456,10 +441,14 @@ function renderListTable(fields,data, pkField)
                 else
                       document.write('<td></td>');
             }else {
-               let fieldValue =  singleRow[field.FieldName]
-                if (typeof fieldValue == 'object' )
-                    document.write('<td>' + fieldValue.description + '</td>');
-                else
+               let fieldValue =  singleRow[field.FieldName];
+                if (typeof fieldValue == 'object' ) {
+                    jsonTag = field.JsonTag ;
+                    subFields = jsonTag.split('.');
+                    secField = subFields[1];
+                    console.log('fieldValue = ' + fieldValue) ;
+                    document.write('<td>' + fieldValue.secField + '</td>');
+                }else
                     document.write('<td>' + fieldValue + '</td>');
               }
           }

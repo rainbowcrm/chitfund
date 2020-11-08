@@ -3,11 +3,13 @@ package com.primus.common.finitevalue.dao;
 import com.primus.common.finitevalue.model.FiniteValue;
 import com.primus.generic.BusinessModel;
 import com.techtrade.rads.framework.utils.Utils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -27,6 +29,20 @@ public class FiniteValueDAO {
         List<FiniteValue> ans = query.getResultList();
 
         return ans;
+
+    }
+
+    public FiniteValue getFVByDescription(String groupCode,String description)
+    {
+        Query query =  em.createQuery("from FiniteValue  where group.groupCode = ? and  description = ?"   );
+        query.setParameter(1,groupCode);
+        query.setParameter(2,description);
+        List<FiniteValue> ans = query.getResultList();
+        if (!CollectionUtils.isEmpty(ans))
+        {
+            return ans.get(0);
+        }
+        return null;
 
     }
 

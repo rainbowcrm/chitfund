@@ -1,5 +1,6 @@
 package com.primus.metadata;
 
+import com.primus.common.finitevalue.service.FiniteValueService;
 import com.primus.generic.GenericService;
 import com.primus.generic.GenericValidator;
 import org.springframework.beans.BeansException;
@@ -17,6 +18,9 @@ public class ServiceFactory  implements ApplicationContextAware {
     @Autowired
     GenericValidator genericValidator ;
 
+    @Autowired
+    FiniteValueService finiteValueService ;
+
 
 
     public Object instantiateObject(String obj  )
@@ -25,6 +29,8 @@ public class ServiceFactory  implements ApplicationContextAware {
             return genericService ;
         if("genericValidator".equalsIgnoreCase(obj))
             return genericValidator ;
+        if("finiteValueService".equalsIgnoreCase(obj))
+            return finiteValueService ;
 
 
         return genericService;

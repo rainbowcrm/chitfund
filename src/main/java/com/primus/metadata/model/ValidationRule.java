@@ -10,7 +10,7 @@ import java.util.Date;
 public class ValidationRule {
 
     public enum ValidationType {
-        MANDATORY, UNIQUE, REFERRED ,  RANGED  , NON_ZERO_POSITIVE, ONLY_PRESENT_FUTUREDATE , ONLY_PASTDATE
+        MANDATORY, UNIQUE, FV, REFERRED ,  RANGED  , NON_ZERO_POSITIVE, ONLY_PRESENT_FUTUREDATE , ONLY_PASTDATE
     }
 
     protected Date lastUpdateDate;
@@ -80,6 +80,7 @@ public class ValidationRule {
     String referredEntity;
     String referredField;
     String params;
+    String fvGroup ;
 
     @ManyToOne(cascade= CascadeType.DETACH)
     @JoinColumn(name  ="ENTITY_NAME")
@@ -136,5 +137,14 @@ public class ValidationRule {
 
     public void setParams(String params) {
         this.params = params;
+    }
+
+    @Column(name = "FV_GROUP")
+    public String getFvGroup() {
+        return fvGroup;
+    }
+
+    public void setFvGroup(String fvGroup) {
+        this.fvGroup = fvGroup;
     }
 }

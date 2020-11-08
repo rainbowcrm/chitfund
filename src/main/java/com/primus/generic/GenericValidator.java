@@ -3,6 +3,9 @@ package com.primus.generic;
 import com.primus.ErrorCodes;
 import com.primus.common.IValidator;
 import com.primus.common.PrimusEntityFactory;
+import com.primus.common.finitevalue.model.FiniteGroup;
+import com.primus.common.finitevalue.model.FiniteValue;
+import com.primus.common.finitevalue.service.FiniteValueService;
 import com.primus.metadata.ServiceFactory;
 import com.primus.metadata.model.MetadataEntity;
 import com.primus.metadata.model.ValidationRule;
@@ -65,6 +68,25 @@ public class GenericValidator implements IValidator {
                        result.addError(
                                getErrorforCode(context.getLocale(),ErrorCodes.FIELD_NOTUNIQUE,validationRule.getParams()));
                        result.setResult(TransactionResult.Result.FAILURE);
+                   }
+               }
+               if (validationRule.getValidationType().equals(ValidationRule.ValidationType.FV) && fieldValue != null) {
+                   FiniteGroup fvGroup = new FiniteGroup();
+                   String fvGroupCode =  validationRule.getFvGroup() ;
+                   fvGroup.setGroupCode(fvGroupCode);
+                   FiniteValue fvalue = (FiniteValue)  fieldValue ;
+                   fvalue.setGroup(fvGroup);
+                   FiniteValueService finiteValueService = (FiniteValueService)ServiceFactory.services().instantiateObject("finiteValueService");
+                   FiniteValue value = finiteValueService.getFiniteValue(context,fvalue);
+                   if ( value == null )
+                   {
+                       result.addError(
+                               getErrorforCode(context.getLocale(),ErrorCodes.VALUE_NOTFOUND,validationRule.getParams()));
+                       result.setResult(TransactionResult.Result.FAILURE);
+                   }else
+                   {
+                       model.setProperty(validationRule.getField(),value);
+
                    }
                }
 
