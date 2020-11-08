@@ -115,34 +115,8 @@ pageContent = getGenericList(entity,currentPage,recordsPerPage);
                    </thead>
                    <tbody>
                     <script>
-                        data = pageContent.data
-                        for ( var i in data) {
-                               singleRow=  data[i];
-                               console.log(fields);
-
-                               document.write("<tr>");
-                               document.write('<td><input type="checkbox" id="checkbox2" name="options[]" value="' + singleRow[pkField] + '"></td>');
-                               for ( var i in fields) {
-                                  var field = fields[i];
-                                  if (field.ListPageBV != 'IGNORE')
-                                  {
-                                    if (field.DisplayControl == 'CheckBox'){
-                                        if ( singleRow[field.FieldName] == true)
-                                             document.write('<td> &#10004 </td>');
-                                        else
-                                              document.write('<td></td>');
-                                    }else {
-                                        document.write('<td>' + singleRow[field.FieldName] + '</td>');
-                                      }
-                                  }
-                               }
-                                document.write('<td>');
-								document.write('<a href="#editDataModel" class="edit" onClick = "populateData(\''+singleRow[pkField]+'\',\'' + entity + '\');" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>');
-								document.write('&nbsp');
-								document.write('<a href="#deleteDataModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>');
-							    document.write('</td>');
-                                document.write("</tr>");
-                        }
+                        data = pageContent.data;
+                        renderListTable(fields,data, pkField);
 
                     </script>
 

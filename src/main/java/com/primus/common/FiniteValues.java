@@ -22,7 +22,7 @@ public class FiniteValues {
         Map<String,String> keyVal = FVMap.get(groupCode);
         keyVal.entrySet().forEach( entry -> {
             Map<String,String> tempMap = new HashMap<>();
-            tempMap.put("Code",entry.getKey());
+            tempMap.put("Code",entry.getValue());
             tempMap.put("Value",entry.getValue());
             ret.add(tempMap);
         });

@@ -228,29 +228,44 @@ return false;
 }
 
 
+function setJsonValueForSave(postContent,propTag,propValue,ctrl)
+{
+   if (propTag != '' && propTag != null )
+   {
+        if(propTag.includes("."))
+        {
+            parts = propTag.split(".");
+            let  subObject = { };
+            setJsonValueForSave (subObject,parts[1],propValue,ctrl);
+            postContent[parts[0]]= subObject;
+        }
+        else
+        {
+             if(ctrl.type == 'checkbox')
+             {
+                if (ctrl.checked == true )
+                   postContent[propTag]= 'true';
+                else
+                  postContent[propTag] = 'false';
+             }else
+             {
+                  postContent[propTag] = propValue;
+             }
+         }
+   }
+
+}
+
 function saveData(entity,event)
 {
 ct = $("#frmgenericAdd")[0].elements.length ;
 let postContent= { };
 for (i =0 ; i < ct ;i ++)
 {
-   var ctrl = $("#frmgenericAdd")[0].elements[i];
+      var ctrl = $("#frmgenericAdd")[0].elements[i];
       var propValue = ctrl.value;
       var propTag = ctrl.getAttribute("data-json");
-
-       if (propTag != '' && propTag != null )
-       {
-          if(ctrl.type == 'checkbox')
-          {
-             if (ctrl.checked == true )
-                postContent[propTag] = 'true';
-             else
-               postContent[propTag] = 'false';
-          }else
-          {
-          postContent[propTag] = propValue;
-          }
-      }
+      setJsonValueForSave(postContent,propTag,propValue,ctrl);
 
 }
 console.log(postContent);
@@ -262,7 +277,6 @@ let request = formRequest("POST",fullurl);
 setToken(request);
      request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-
                 return true;
         }else
         {
@@ -420,6 +434,46 @@ function reRenderTable(tableId,entity, data,pkField)
                 newrow.innerHTML =  innerContent;
             }
 }
+
+function renderListTable(fields,data, pkField)
+{
+    console.clear();
+    console.log(fields);
+    for ( var i in data) {
+       singleRow=  data[i];
+
+       console.log(singleRow);
+
+       document.write("<tr>");
+       document.write('<td><input type="checkbox" id="checkbox2" name="options[]" value="' + singleRow[pkField] + '"></td>');
+       for ( var i in fields) {
+          var field = fields[i];
+          if (field.ListPageBV != 'IGNORE')
+          {
+            if (field.DisplayControl == 'CheckBox'){
+                if ( singleRow[field.FieldName] == true)
+                     document.write('<td> &#10004 </td>');
+                else
+                      document.write('<td></td>');
+            }else {
+               let fieldValue =  singleRow[field.FieldName]
+                if (typeof fieldValue == 'object' )
+                    document.write('<td>' + fieldValue.description + '</td>');
+                else
+                    document.write('<td>' + fieldValue + '</td>');
+              }
+          }
+       }
+        document.write('<td>');
+        document.write('<a href="#editDataModel" class="edit" onClick = "populateData(\''+singleRow[pkField]+'\',\'' + entity + '\');" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>');
+        document.write('&nbsp');
+        document.write('<a href="#deleteDataModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>');
+        document.write('</td>');
+        document.write("</tr>");
+    }
+
+}
+
 
 function renderControls(fields, prefixId )
 {

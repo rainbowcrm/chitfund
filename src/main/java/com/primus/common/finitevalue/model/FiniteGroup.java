@@ -1,5 +1,8 @@
 package com.primus.common.finitevalue.model;
 
+import com.techtrade.rads.framework.annotations.RadsPropertySet;
+import com.techtrade.rads.framework.model.abstracts.ModelObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,25 +10,29 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name="FINITE_GROUPS")
-public class FiniteGroup {
+public class FiniteGroup extends ModelObject {
     String groupCode;
     String groupDesc ;
 
     @Column(name  ="GROUP_CODE")
     @Id
+    @RadsPropertySet(isPK = true )
     public String getGroupCode() {
         return groupCode;
     }
 
+    @RadsPropertySet(isPK = true )
     public void setGroupCode(String groupCode) {
         this.groupCode = groupCode;
     }
 
-    @Column(name  ="DESCRIPTION")
+    @Column(name  ="GROUP_DESC")
+    @RadsPropertySet(isBK = true )
     public String getGroupDesc() {
         return groupDesc;
     }
 
+    @RadsPropertySet(isBK = true )
     public void setGroupDesc(String groupDesc) {
         this.groupDesc = groupDesc;
     }
