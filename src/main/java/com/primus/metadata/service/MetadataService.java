@@ -1,6 +1,8 @@
 package com.primus.metadata.service;
 
 import com.primus.common.FiniteValues;
+import com.primus.common.finitevalue.model.FiniteValue;
+import com.primus.common.finitevalue.service.FiniteValueService;
 import com.primus.generic.BusinessContext;
 import com.primus.generic.BusinessModel;
 import com.primus.generic.GenericService;
@@ -9,6 +11,7 @@ import com.primus.metadata.dao.MetadataDAO;
 import com.primus.metadata.model.Field;
 import com.primus.metadata.model.MetadataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -27,8 +30,17 @@ public class MetadataService {
     {
          if (field.getPopulator().contains("FiniteValues"))
          {
+             FiniteValueService finiteValueService = (FiniteValueService) ServiceFactory.services().instantiateObject("finiteValueService");
              String fvGroup = field.getPopulator().substring(13,field.getPopulator().length());
-             List<Map<String,String>> dropDownValues = FiniteValues.getFiniteValues(fvGroup);
+             BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
+             List<FiniteValue> fvsByGroup = finiteValueService.getAllFVbyGroup(context,fvGroup);
+             List<Map<String,String>> dropDownValues = new ArrayList<>();
+             fvsByGroup.forEach( fv -> {
+                 Map<String,String> mp = new HashMap();
+                 mp.put("Code",fv.getDescription());
+                 mp.put("Value",fv.getDescription());
+                 dropDownValues.add(mp);
+             });
              field.setDropDownValues(dropDownValues);
          }
 

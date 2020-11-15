@@ -412,7 +412,17 @@ function reRenderTable(tableId,entity, data,pkField)
                         else
                               innerContent = innerContent + '<td></td>' ;
                     }else {
-                        innerContent = innerContent + '<td>' + singleRow[field.FieldName] + '</td>';
+                        let fieldValue =  singleRow[field.FieldName];
+                        console.log(fieldValue);
+                        if (typeof fieldValue == 'object' ) {
+                            jsonTag = field.JsonTag ;
+                            subFields = jsonTag.split('.');
+                            secField = subFields[1];
+                            console.log('fieldValue = ' + fieldValue) ;
+                            console.log('secField =' + secField);
+                            innerContent = innerContent + '<td>' + fieldValue[secField] + '</td>';
+                        }else
+                             innerContent = innerContent + '<td>' + singleRow[field.FieldName] + '</td>';
                       }
                   }
                }
