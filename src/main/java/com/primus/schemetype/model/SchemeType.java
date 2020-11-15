@@ -2,6 +2,7 @@ package com.primus.schemetype.model;
 
 import com.primus.common.finitevalue.model.FiniteValue;
 import com.primus.generic.BusinessModel;
+import com.techtrade.rads.framework.annotations.RadsPropertySet;
 
 import javax.persistence.*;
 
@@ -16,10 +17,12 @@ public class SchemeType extends BusinessModel {
     int noParticipants;
 
     @Column(name  ="CODE")
+    @RadsPropertySet(isBK = true)
     public String getCode() {
         return code;
     }
 
+    @RadsPropertySet(isBK = true)
     public void setCode(String code) {
         this.code = code;
     }
