@@ -75,7 +75,13 @@ function populateData(pkValue,entity)
        var jsonTag = edCtrl.getAttribute("data-json");
        if (jsonTag != '' && jsonTag != null )
        {
-            if (edCtrl.type == 'checkbox')
+            if(jsonTag.includes("."))
+            {
+                parts = jsonTag.split(".");
+                console.log(snapsotresponse[parts[0]][parts[1]]);
+                edCtrl.value=snapsotresponse[parts[0]][parts[1]];
+
+            } else if (edCtrl.type == 'checkbox')
             {
                 if (snapsotresponse[jsonTag] == true )
                     edCtrl.checked = true;
@@ -447,7 +453,8 @@ function renderListTable(fields,data, pkField)
                     subFields = jsonTag.split('.');
                     secField = subFields[1];
                     console.log('fieldValue = ' + fieldValue) ;
-                    document.write('<td>' + fieldValue.secField + '</td>');
+                    console.log('secField =' + secField);
+                    document.write('<td>' + fieldValue[secField] + '</td>');
                 }else
                     document.write('<td>' + fieldValue + '</td>');
               }
