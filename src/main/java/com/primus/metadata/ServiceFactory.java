@@ -22,6 +22,10 @@ public class ServiceFactory  implements ApplicationContextAware {
     FiniteValueService finiteValueService ;
 
 
+    public GenericService getServiceForEntity(String entity)
+    {
+        return  genericService;
+    }
 
     public Object instantiateObject(String obj  )
     {

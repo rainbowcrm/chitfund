@@ -10,6 +10,7 @@ import com.primus.metadata.ServiceFactory;
 import com.primus.metadata.dao.MetadataDAO;
 import com.primus.metadata.model.Field;
 import com.primus.metadata.model.MetadataEntity;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -42,9 +43,32 @@ public class MetadataService {
                  dropDownValues.add(mp);
              });
              field.setDropDownValues(dropDownValues);
-         }
+         } else {
 
+             String parts[] = field.getPopulator().split("[.]");
+             GenericService service = ServiceFactory.services().getServiceForEntity(parts[0]);
+             List<BusinessModel> entities =  service.listData(parts[0],0,9999,"",parts[1]);
+             if (!CollectionUtils.isEmpty(entities))
+             {
+                     List<Map<String,String>> dropDownValues = new ArrayList<>();
+                     entities.forEach(entity -> {
+                         try {
+                                String retValue = (String )entity.getProperty(parts[1]);
+                                 Map<String,String> mp = new HashMap();
+                                 mp.put("Code",retValue);
+                                 mp.put("Value",retValue);
+                                 dropDownValues.add(mp);
+
+                         }catch (Exception ex) {
+
+                         }
+                    });
+                 field.setDropDownValues(dropDownValues);
+              }
+         }
     }
+
+
     public Map getPage(String entity, Integer from, Integer to,Map filter)
     {
 
@@ -70,7 +94,6 @@ public class MetadataService {
         List<Map> data = new ArrayList<>();
         if (metadataEntity != null ) {
             metadataEntity.getFields().forEach( field ->{
-                fields.add(field.toMap());
                 if (filter != null && filter.containsKey(field.getJsonTag()))
                 {
                     if(!whereCondition.toString().equals(""))
@@ -81,8 +104,11 @@ public class MetadataService {
                 }
                 if (field.getDisplayControl().equalsIgnoreCase("DropDown"))  {
                     populateDropDownContents(field);
+                    System.out.println(field);
                 }
+                fields.add(field.toMap());
             });
+
             ans.put("fields", fields);
         }
 
