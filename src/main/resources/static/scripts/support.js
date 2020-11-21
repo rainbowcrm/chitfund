@@ -451,6 +451,7 @@ function renderListTable(fields,data, pkField)
           var field = fields[i];
           if (field.ListPageBV != 'IGNORE')
           {
+
             if (field.DisplayControl == 'CheckBox'){
                 if ( singleRow[field.FieldName] == true)
                      document.write('<td> &#10004 </td>');
@@ -458,15 +459,19 @@ function renderListTable(fields,data, pkField)
                       document.write('<td></td>');
             }else {
                let fieldValue =  singleRow[field.FieldName];
-                if (typeof fieldValue == 'object' ) {
+               console.log('fieldValue = ' + field.FieldName) ;
+                if (typeof fieldValue == 'object'  && fieldValue != null) {
                     jsonTag = field.JsonTag ;
                     subFields = jsonTag.split('.');
                     secField = subFields[1];
                     console.log('fieldValue = ' + fieldValue) ;
                     console.log('secField =' + secField);
                     document.write('<td>' + fieldValue[secField] + '</td>');
-                }else
+                }else {
+                    if (fieldValue == null)
+                            fieldValue ='';
                     document.write('<td>' + fieldValue + '</td>');
+                 }
               }
           }
        }

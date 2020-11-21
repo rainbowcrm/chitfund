@@ -107,7 +107,7 @@ VALUES( 'Scheme','EndDate', false,false,true,'SHOW','SHOW','SHOW','EndDate','End
 INSERT INTO entity_fields (ENTITY_NAME,FIELD_NAME,IS_PK, IS_BK, IS_MANDATORY, LIST_PAGE_BV, EDIT_PAGE_BV,  ADD_PAGE_BV, UI_LABEL_KEY,UI_LABEL_VALUE,JSON_TAG,SHOW_INFILTER,DISPLAY_CONTROL,VALUE_POPULATOR,SCREEN_WIDTH,SEQ_POS)
 VALUES( 'Scheme','NextAuctionDate', false,false,false,'SHOW','SHOW','SHOW','NextAuction','Next Auction','NextAuctionDate',false,'DateTime-local',null,20,8);
 INSERT INTO entity_fields (ENTITY_NAME,FIELD_NAME,IS_PK, IS_BK, IS_MANDATORY, LIST_PAGE_BV, EDIT_PAGE_BV,  ADD_PAGE_BV, UI_LABEL_KEY,UI_LABEL_VALUE,JSON_TAG,SHOW_INFILTER,DISPLAY_CONTROL,VALUE_POPULATOR,SCREEN_WIDTH,SEQ_POS)
-VALUES( 'Scheme','Comments', false,false,false,'SHOW','SHOW','IGNORE','Comments','Comments','Comments',false,'Test',null,20,9);
+VALUES( 'Scheme','Comments', false,false,false,'IGNORE','SHOW','SHOW','Comments','Comments','Comments',false,'Test',null,20,9);
 INSERT INTO entity_fields (ENTITY_NAME,FIELD_NAME,IS_PK, IS_BK, IS_MANDATORY, LIST_PAGE_BV, EDIT_PAGE_BV,  ADD_PAGE_BV, UI_LABEL_KEY,UI_LABEL_VALUE,JSON_TAG,SHOW_INFILTER,DISPLAY_CONTROL,VALUE_POPULATOR,SCREEN_WIDTH,SEQ_POS)
 VALUES( 'Scheme','Version',false,false,true,'IGNORE','HIDE','IGNORE','','','Version',false,'Hidden',null,30,10);
 
