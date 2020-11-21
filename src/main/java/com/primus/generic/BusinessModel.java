@@ -1,6 +1,7 @@
 package com.primus.generic;
 
 import com.techtrade.rads.framework.annotations.RadsPropertySet;
+import com.techtrade.rads.framework.context.IRadsContext;
 import com.techtrade.rads.framework.model.abstracts.ModelObject;
 import com.techtrade.rads.framework.utils.Utils;
 
@@ -14,29 +15,23 @@ import java.util.Map;
 
 @MappedSuperclass
 public abstract  class BusinessModel extends ModelObject {
-      String entity ;
 
-      @Transient
-    public String getEntity() {
-        return entity;
-    }
 
-    protected void setEntity(String entity) {
-        this.entity = entity;
-    }
-
-    @RadsPropertySet(excludeFromMap = true,excludeFromJSON = true,excludeFromXML = true)
-    public void setProperty(String property, Object value) throws InvocationTargetException, IllegalAccessException
-    {
+    @RadsPropertySet(excludeFromMap = true, excludeFromJSON = true, excludeFromXML = true)
+    public void setProperty(String property, Object value) throws InvocationTargetException, IllegalAccessException {
         Map<String, Method> allFields = new HashMap();
         Method[] allMethods = this.getClass().getMethods();
-        for(int i = 0; i < allMethods.length; ++i) {
+        for (int i = 0; i < allMethods.length; ++i) {
             Method currMethod = allMethods[i];
             if (("set" + Utils.initupper(property)).equals(currMethod.getName())) {
                 currMethod.invoke(this, value);
             }
         }
     }
+
+
+
+
 
     @Transient
     @RadsPropertySet(excludeFromMap = true,excludeFromJSON = true,excludeFromXML = true)

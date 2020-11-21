@@ -18,9 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Component
 public class GenericValidator implements IValidator {
@@ -42,7 +40,6 @@ public class GenericValidator implements IValidator {
     @Override
     public TransactionResult basicValidation(BusinessModel model, BusinessContext context)  throws Exception {
         TransactionResult result  = new TransactionResult();
-
         MetadataEntity metadataEntity = metadataService.getMetadata(context.getCurrentEntity(),context) ;
         String serviceClass = metadataEntity.getServiceName() ;
         IService currentService  = ObjectFactory.getInstance().getServiceInstance(serviceClass,context);
@@ -90,16 +87,26 @@ public class GenericValidator implements IValidator {
                }
                if (validationRule.getValidationType().equals(ValidationRule.ValidationType.FK) && fieldValue != null) {
                    String referredEntity = validationRule.getReferredEntity() ;
-                   String referredValue = validationRule.getReferredField() ;
+                   String referredField = validationRule.getReferredField() ;
+                   String entityClass = ObjectFactory.getInstance().getEntityClass(referredEntity,context);
                    GenericService  genericService = ObjectFactory.getInstance().getServiceForEntity(referredEntity,context);
-                 //  genericService.fetchData()
+                   String parentEntity = context.getCurrentEntity() ;
+                   context.setCurrentEntity(entityClass);
+                   BusinessModel subObject = genericService.getFullData((BusinessModel) fieldValue,context);
+                   context.setCurrentEntity(parentEntity);
+                   if ( subObject == null )
+                   {
+                       result.addError(
+                               getErrorforCode(context.getLocale(),ErrorCodes.VALUE_NOTFOUND,validationRule.getParams()));
+                       result.setResult(TransactionResult.Result.FAILURE);
+                   }else
+                   {
+                       model.setProperty(validationRule.getField(),subObject);
 
+                   }
 
                }
-
-
-
-               }
+       }
            return result ;
     }
 

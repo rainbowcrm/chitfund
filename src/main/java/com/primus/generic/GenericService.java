@@ -43,6 +43,7 @@ public class GenericService implements IService {
         return result;
         }catch (Exception ex)
         {
+            ex.printStackTrace();
             TransactionResult result = new TransactionResult(TransactionResult.Result.FAILURE);
             result.addError(new RadsError("","system error! please contact Admin"));
             return result;
@@ -126,7 +127,7 @@ public class GenericService implements IService {
             }
         }
         if (condition.toString().equals(" where ")) return null;
-        List<? extends BusinessModel> objects = listData(object.getEntity(), 0, 2, condition.toString(),null);
+        List<? extends BusinessModel> objects = listData(context.getCurrentEntity(), 0, 2, condition.toString(),null);
         if (!CollectionUtils.isEmpty(objects))
             return objects.get(0);
         else

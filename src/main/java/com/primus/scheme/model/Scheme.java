@@ -43,24 +43,24 @@ public class Scheme  extends BusinessModel {
 
     @ManyToOne(cascade= CascadeType.DETACH)
     @JoinColumn(name  ="SCHEME_TYPE")
-    @RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
+    //@RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
     public SchemeType getSchemeType() {
         return schemeType;
     }
 
-    @RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
+    //@RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
     public void setSchemeType(SchemeType schemeType) {
         this.schemeType = schemeType;
     }
 
     @ManyToOne(cascade= CascadeType.DETACH)
-    @JoinColumn(name  ="FREQUENCY")
-    @RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
+    @JoinColumn(name  ="STATUS")
+    //@RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
     public FiniteValue getStatus() {
         return status;
     }
 
-    @RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
+    //@RadsPropertySet(useBKForMap = true,useBKForJSON = true,useBKForXML = true,usePKForMap = true,usePKForJSON = true,usePKForXML = true)
     public void setStatus(FiniteValue status) {
         this.status = status;
     }
