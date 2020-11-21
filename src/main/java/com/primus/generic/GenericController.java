@@ -1,6 +1,6 @@
 package com.primus.generic;
 
-import com.primus.common.PrimusEntityFactory;
+import com.primus.common.ObjectFactory;
 import com.techtrade.rads.framework.model.abstracts.RadsError;
 import com.techtrade.rads.framework.model.transaction.TransactionResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,7 @@ public class GenericController {
     @Autowired
     GenericService genericService ;
 
-    @Autowired
-    PrimusEntityFactory primusEntityFactory;
+
 
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -28,7 +27,7 @@ public class GenericController {
     {
         BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
 
-        String entityClass = primusEntityFactory.getEntityClass(entity);
+        String entityClass = ObjectFactory.getInstance().getEntityClass(entity,context);
         context.setCurrentEntity(entity);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
         TransactionResult result = genericService.create(model,context);
@@ -59,7 +58,7 @@ public class GenericController {
     {
         BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
         context.setCurrentEntity(entity);
-        String entityClass = primusEntityFactory.getEntityClass(entity);
+        String entityClass = ObjectFactory.getInstance().getEntityClass(entity,context);
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
         TransactionResult result = genericService.update(model,context);
         if (!result.hasErrors()) {

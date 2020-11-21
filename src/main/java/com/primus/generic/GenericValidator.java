@@ -1,19 +1,18 @@
 package com.primus.generic;
 
 import com.primus.ErrorCodes;
+import com.primus.common.IService;
 import com.primus.common.IValidator;
-import com.primus.common.PrimusEntityFactory;
 import com.primus.common.finitevalue.model.FiniteGroup;
 import com.primus.common.finitevalue.model.FiniteValue;
 import com.primus.common.finitevalue.service.FiniteValueService;
-import com.primus.metadata.ServiceFactory;
+import com.primus.common.ObjectFactory;
 import com.primus.metadata.model.MetadataEntity;
 import com.primus.metadata.model.ValidationRule;
 import com.primus.metadata.service.MetadataService;
 import com.techtrade.rads.framework.model.abstracts.RadsError;
 import com.techtrade.rads.framework.model.transaction.TransactionResult;
 import org.apache.commons.collections.CollectionUtils;
-import org.bouncycastle.cms.CMSEnvelopedData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,7 +26,7 @@ import java.util.ResourceBundle;
 public class GenericValidator implements IValidator {
     public  ResourceBundle  resourceBundle = null;
 
-    public   RadsError getErrorforCode(Locale locale , String errorCode, String ... params) {
+    private   RadsError getErrorforCode(Locale locale , String errorCode, String ... params) {
         if (resourceBundle == null) {
             resourceBundle = ResourceBundle.getBundle("ErrorMessages");
         }
@@ -44,9 +43,9 @@ public class GenericValidator implements IValidator {
     public TransactionResult basicValidation(BusinessModel model, BusinessContext context)  throws Exception {
         TransactionResult result  = new TransactionResult();
 
-        MetadataEntity metadataEntity = metadataService.getMetadata(context.getCurrentEntity()) ;
+        MetadataEntity metadataEntity = metadataService.getMetadata(context.getCurrentEntity(),context) ;
         String serviceClass = metadataEntity.getServiceName() ;
-        GenericService currentService  = (GenericService)ServiceFactory.services().instantiateObject(serviceClass);
+        IService currentService  = ObjectFactory.getInstance().getServiceInstance(serviceClass,context);
         if (CollectionUtils.isEmpty(metadataEntity.getValidationRules())) {
                return new TransactionResult(TransactionResult.Result.SUCCESS);
            }
@@ -76,7 +75,7 @@ public class GenericValidator implements IValidator {
                    fvGroup.setGroupCode(fvGroupCode);
                    FiniteValue fvalue = (FiniteValue)  fieldValue ;
                    fvalue.setGroup(fvGroup);
-                   FiniteValueService finiteValueService = (FiniteValueService)ServiceFactory.services().instantiateObject("finiteValueService");
+                   FiniteValueService finiteValueService = (FiniteValueService) ObjectFactory.getInstance().getFiniteValueServiceInstance(context);
                    FiniteValue value = finiteValueService.getFiniteValue(context,fvalue);
                    if ( value == null )
                    {
@@ -89,14 +88,24 @@ public class GenericValidator implements IValidator {
 
                    }
                }
+               if (validationRule.getValidationType().equals(ValidationRule.ValidationType.FK) && fieldValue != null) {
+                   String referredEntity = validationRule.getReferredEntity() ;
+                   String referredValue = validationRule.getReferredField() ;
+                   GenericService  genericService = ObjectFactory.getInstance().getServiceForEntity(referredEntity,context);
+                 //  genericService.fetchData()
 
-           }
+
+               }
+
+
+
+               }
            return result ;
     }
 
     @Override
     public TransactionResult advancedValidation(BusinessModel model, BusinessContext context) throws Exception {
-        MetadataEntity metadataEntity = metadataService.getMetadata(context.getCurrentEntity()) ;
+        MetadataEntity metadataEntity = metadataService.getMetadata(context.getCurrentEntity(),context) ;
         if (CollectionUtils.isEmpty(metadataEntity.getValidationRules()))
         {
             return new TransactionResult(TransactionResult.Result.SUCCESS);

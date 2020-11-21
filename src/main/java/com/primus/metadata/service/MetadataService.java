@@ -1,12 +1,12 @@
 package com.primus.metadata.service;
 
-import com.primus.common.FiniteValues;
+import com.primus.common.IService;
 import com.primus.common.finitevalue.model.FiniteValue;
 import com.primus.common.finitevalue.service.FiniteValueService;
 import com.primus.generic.BusinessContext;
 import com.primus.generic.BusinessModel;
 import com.primus.generic.GenericService;
-import com.primus.metadata.ServiceFactory;
+import com.primus.common.ObjectFactory;
 import com.primus.metadata.dao.MetadataDAO;
 import com.primus.metadata.model.Field;
 import com.primus.metadata.model.MetadataEntity;
@@ -27,13 +27,12 @@ public class MetadataService {
     MetadataDAO metadataDAO;
 
 
-    private void populateDropDownContents(Field field)
+    private void populateDropDownContents(Field field,BusinessContext context)
     {
          if (field.getPopulator().contains("FiniteValues"))
          {
-             FiniteValueService finiteValueService = (FiniteValueService) ServiceFactory.services().instantiateObject("finiteValueService");
+             FiniteValueService finiteValueService = (FiniteValueService) ObjectFactory.getInstance().getFiniteValueServiceInstance(context);
              String fvGroup = field.getPopulator().substring(13,field.getPopulator().length());
-             BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
              List<FiniteValue> fvsByGroup = finiteValueService.getAllFVbyGroup(context,fvGroup);
              List<Map<String,String>> dropDownValues = new ArrayList<>();
              fvsByGroup.forEach( fv -> {
@@ -46,7 +45,7 @@ public class MetadataService {
          } else {
 
              String parts[] = field.getPopulator().split("[.]");
-             GenericService service = ServiceFactory.services().getServiceForEntity(parts[0]);
+             GenericService service = ObjectFactory.getInstance().getServiceForEntity(parts[0],context);
              List<BusinessModel> entities =  service.listData(parts[0],0,9999,"",parts[1]);
              if (!CollectionUtils.isEmpty(entities))
              {
@@ -69,13 +68,13 @@ public class MetadataService {
     }
 
 
-    public Map getPage(String entity, Integer from, Integer to,Map filter)
+    public Map getPage(String entity, Integer from, Integer to,Map filter,BusinessContext context)
     {
 
         int fro = from!=null?from.intValue():0;
         int toI= to!=null?to.intValue():12 ;
 
-        GenericService genericService = (GenericService) ServiceFactory.services().instantiateObject("genericService") ;
+        IService genericService =  ObjectFactory.getInstance().getServiceInstance("genericService",context) ;
         MetadataEntity metadataEntity =  null;
         if (cachedMetadata.get(entity) == null)
         {
@@ -103,7 +102,7 @@ public class MetadataService {
                     whereCondition.append(field.getJsonTag() + "='" + filter.get(field.getJsonTag()) + "'");
                 }
                 if (field.getDisplayControl().equalsIgnoreCase("DropDown"))  {
-                    populateDropDownContents(field);
+                    populateDropDownContents(field,context);
                     System.out.println(field);
                 }
                 fields.add(field.toMap());
@@ -126,12 +125,12 @@ public class MetadataService {
 
     }
 
-    public Map getListContent(String entity, Integer from, Integer to)
+    public Map getListContent(String entity, Integer from, Integer to,BusinessContext context)
     {
 
         int fro = from!=null?from.intValue():0;
         int toI= to!=null?to.intValue():12 ;
-        GenericService genericService = (GenericService) ServiceFactory.services().instantiateObject("genericService") ;
+        IService genericService = ObjectFactory.getInstance().getServiceInstance("genericService",context) ;
         Map ans = new LinkedHashMap();
         List<Map> data = new ArrayList<>();
         List <BusinessModel> entries  = genericService.listData(entity,fro,toI,null,null);
@@ -145,7 +144,7 @@ public class MetadataService {
 
     }
 
-    public  MetadataEntity getMetadata(String entity) {
+    public  MetadataEntity getMetadata(String entity,BusinessContext context) {
         return cachedMetadata.get(entity) ;
     }
 }

@@ -29,8 +29,8 @@ public class CommonAPIController {
     @RequestMapping(value = "/getPage", method = RequestMethod.GET)
     public ResponseEntity<Map> getListPageMeta(@RequestParam String pageid, @RequestParam Optional<Integer> from , @RequestParam Optional<Integer> to )
     {
-
-        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null),null);
+        BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
+        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null),null,context);
         ResponseEntity entity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  entity;
 
@@ -43,7 +43,8 @@ public class CommonAPIController {
                                                   @RequestBody Optional<Map> filter)
     {
 
-        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null),filter.orElse(null));
+        BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
+        Map ret = metadataService.getPage(pageid,from.orElse(null),to.orElse(null),filter.orElse(null),context);
         ResponseEntity entity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  entity;
 
@@ -52,11 +53,12 @@ public class CommonAPIController {
     @RequestMapping(value = "/getDataFromPK", method = RequestMethod.GET)
     public ResponseEntity<Map> getDataFromPK(@RequestParam String entity,  @RequestParam String pk)
     {
-
-        BusinessModel model = genericService.fetchData(entity,pk);
+        BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
+        BusinessModel model = genericService.fetchData(entity,pk,context);
         Map ret = model.toMap() ;
         ResponseEntity responseEntity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  responseEntity;
+
 
     }
 

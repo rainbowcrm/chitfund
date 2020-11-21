@@ -10,7 +10,7 @@ import java.util.Date;
 public class ValidationRule {
 
     public enum ValidationType {
-        MANDATORY, UNIQUE, FV, REFERRED ,  RANGED  , NON_ZERO_POSITIVE, ONLY_PRESENT_FUTUREDATE , ONLY_PASTDATE
+        MANDATORY, UNIQUE, FV, FK ,  RANGED  , NON_ZERO_POSITIVE, ONLY_PRESENT_FUTUREDATE , ONLY_PASTDATE
     }
 
     protected Date lastUpdateDate;
