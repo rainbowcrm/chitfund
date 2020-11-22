@@ -88,7 +88,7 @@ function populateData(pkValue,entity)
                 edCtrl.value=snapsotresponse[parts[0]][parts[1]];
 
             } else if (edCtrl.type == 'date' ||  edCtrl.type == 'datetime-local') {
-               edCtrl.value = changeDateformat( snapsotresponse[jsonTag]);
+               edCtrl.value =  snapsotresponse[jsonTag];
             }else if (edCtrl.type == 'checkbox')
             {
                 if (snapsotresponse[jsonTag] == true )
@@ -248,6 +248,9 @@ function setJsonValueForSave(postContent,propTag,propValue,ctrl)
                    postContent[propTag]= 'true';
                 else
                   postContent[propTag] = 'false';
+             }else if (ctrl.type == 'datetime-local')
+             {
+                postContent[propTag] = propValue.replace('T',' ')
              }else
              {
                   postContent[propTag] = propValue;

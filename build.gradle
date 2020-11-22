@@ -46,7 +46,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework:spring-jdbc")
-    compile files('./lib/Rads.jar')
+    compile files('./lib/radsfw-1.0-SNAPSHOT.jar')
     // end::jetty[]
     // tag::actuator[]
     compile("org.springframework.boot:spring-boot-starter-actuator")

@@ -6,6 +6,9 @@ import com.primus.schemetype.model.SchemeType;
 import com.techtrade.rads.framework.annotations.RadsPropertySet;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity

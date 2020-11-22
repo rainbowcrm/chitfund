@@ -96,6 +96,16 @@ public class BusinessContext implements IRadsContext, Serializable {
 
     @Override
     public String getDateFormat() {
-        return "dd-MM-yyyy";
+        return "yyyy-MM-dd";
+    }
+
+    @Override
+    public void setDateTimeFormat(String s) {
+
+    }
+
+    @Override
+    public String getDateTimeFormat() {
+        return "yyyy-MM-dd HH:mm";
     }
 }
