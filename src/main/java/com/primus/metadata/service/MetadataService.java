@@ -105,7 +105,7 @@ public class MetadataService {
                     populateDropDownContents(field,context);
                     System.out.println(field);
                 }
-                fields.add(field.toMap());
+                fields.add(field.toMap(context));
             });
 
             ans.put("fields", fields);
@@ -115,7 +115,7 @@ public class MetadataService {
         List <BusinessModel> entries  = genericService.listData(entity,fro,toI,whereCondition.toString(),null);
         for ( BusinessModel entry : entries )
         {
-            data.add(entry.toMap());
+            data.add(entry.toMap(context));
         }
         ans.put("data",data);
         long totalRec = genericService.getTotalRecordCount(entity,"");
@@ -136,7 +136,7 @@ public class MetadataService {
         List <BusinessModel> entries  = genericService.listData(entity,fro,toI,null,null);
         for ( BusinessModel entry : entries )
         {
-            data.add(entry.toMap());
+            data.add(entry.toMap(context));
         }
         ans.put("data",data);
         return ans;

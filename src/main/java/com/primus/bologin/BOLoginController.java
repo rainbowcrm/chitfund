@@ -1,5 +1,6 @@
 package com.primus.bologin;
 
+import com.primus.generic.BusinessContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,7 @@ public class BOLoginController {
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
         private ResponseEntity<Map> checkLogin(@RequestBody Map<String,String> input)
         {
+            BusinessContext context = BusinessContext.createContext();
             input.keySet().forEach(key -> {
                 System.out.println(key + ":" + input.get(key));
             });
@@ -41,7 +43,7 @@ public class BOLoginController {
             BOLogin boLogin = boLoginService.getById(userId);
             if (boLogin !=null  && boLogin.getPassword().equals(password) )
             {
-                ret  = boLogin.toMap();
+                ret  = boLogin.toMap(context);
                 ResponseEntity entity =  new ResponseEntity<Map>(ret,HttpStatus.OK);
                 ret.put("sessionId","909999");
                 ret.remove("password");

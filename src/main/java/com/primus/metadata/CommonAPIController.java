@@ -55,7 +55,7 @@ public class CommonAPIController {
     {
         BusinessContext context = BusinessContext.createContext(SecurityContextHolder.getContext());
         BusinessModel model = genericService.fetchData(entity,pk,context);
-        Map ret = model.toMap() ;
+        Map ret = model.toMap(context) ;
         ResponseEntity responseEntity =  new ResponseEntity<Map>(ret, HttpStatus.OK);
         return  responseEntity;
 

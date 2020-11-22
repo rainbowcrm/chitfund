@@ -57,7 +57,12 @@ function getPageCreate(pageid)
     return  snapsotresponse;
 
 }
-
+function changeDateformat(edate)
+{
+    var newdate = edate.split("-").reverse().join("-");
+    console.log(newdate);
+     return newdate;
+}
 function populateData(pkValue,entity)
 {
 
@@ -73,6 +78,7 @@ function populateData(pkValue,entity)
     {
        var edCtrl = $("#frmgenericEdit")[0].elements[i];
        var jsonTag = edCtrl.getAttribute("data-json");
+       console.log('edCtrl.type=' + edCtrl.type);
        if (jsonTag != '' && jsonTag != null )
        {
             if(jsonTag.includes("."))
@@ -81,7 +87,9 @@ function populateData(pkValue,entity)
                 console.log(snapsotresponse[parts[0]][parts[1]]);
                 edCtrl.value=snapsotresponse[parts[0]][parts[1]];
 
-            } else if (edCtrl.type == 'checkbox')
+            } else if (edCtrl.type == 'date' ||  edCtrl.type == 'datetime-local') {
+               edCtrl.value = changeDateformat( snapsotresponse[jsonTag]);
+            }else if (edCtrl.type == 'checkbox')
             {
                 if (snapsotresponse[jsonTag] == true )
                     edCtrl.checked = true;

@@ -1,6 +1,7 @@
 package com.primus.application;
 
 import com.primus.bologin.BOLogin;
+import com.primus.generic.BusinessContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,8 @@ public class ApplicationController {
     @RequestMapping(value = "/getMenus", method = RequestMethod.GET)
     private ResponseEntity<String> checkLogin()
     {
-        String ret  = getApplicationAndMenus().toJSON();
+        BusinessContext context = BusinessContext.createContext();
+        String ret  = getApplicationAndMenus().toJSON(context);
         ResponseEntity entity =  new ResponseEntity<String>(ret,HttpStatus.OK);
         return  entity;
 

@@ -32,7 +32,7 @@ public class GenericController {
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
         TransactionResult result = genericService.create(model,context);
         if (!result.hasErrors()) {
-            ResponseEntity responseEntity = new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
+            ResponseEntity responseEntity = new ResponseEntity<Map>(model.toMap(context), HttpStatus.OK);
             return responseEntity;
         }else
         {
@@ -62,7 +62,7 @@ public class GenericController {
         BusinessModel model = (BusinessModel) BusinessModel.instantiateObjectfromMap(input,entityClass,context);
         TransactionResult result = genericService.update(model,context);
         if (!result.hasErrors()) {
-            ResponseEntity responseEntity = new ResponseEntity<Map>(model.toMap(), HttpStatus.OK);
+            ResponseEntity responseEntity = new ResponseEntity<Map>(model.toMap(context), HttpStatus.OK);
             return responseEntity;
         }else
         {
