@@ -75,15 +75,6 @@ dependencies {
     compile group: 'net.sf.ehcache', name: 'ehcache-core', version: '2.4.6'
 
 
-
-
-
-
-
-
-
-
-
     // end::actuator[]
 
     runtime("mysql:mysql-connector-java:8.0.11")

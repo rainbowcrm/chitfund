@@ -20,7 +20,7 @@ public class Scheme  extends BusinessModel {
     FiniteValue status;
     Date startDate;
     Date endDate ;
-    Date nextAuctionDate ;
+    Timestamp nextAuctionDate ;
     Integer auctionInterval ;
     String comments;
 
@@ -87,11 +87,11 @@ public class Scheme  extends BusinessModel {
     }
 
     @Column(name  ="NEXT_AUCTION_DATE")
-    public Date getNextAuctionDate() {
+    public Timestamp getNextAuctionDate() {
         return nextAuctionDate;
     }
 
-    public void setNextAuctionDate(Date nextAuctionDate) {
+    public void setNextAuctionDate(Timestamp nextAuctionDate) {
         this.nextAuctionDate = nextAuctionDate;
     }
 

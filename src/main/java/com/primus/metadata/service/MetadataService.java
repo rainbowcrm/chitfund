@@ -145,6 +145,15 @@ public class MetadataService {
     }
 
     public  MetadataEntity getMetadata(String entity,BusinessContext context) {
-        return cachedMetadata.get(entity) ;
+        if (cachedMetadata.get(entity) == null)
+        {
+            MetadataEntity metadataEntity = metadataDAO.getEntityDetails(entity);
+            cachedMetadata.put(entity,metadataEntity);
+            return  metadataEntity ;
+        }
+        else
+        {
+            return cachedMetadata.get(entity);
+        }
     }
 }
