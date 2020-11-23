@@ -36,7 +36,7 @@ public class Customer extends BusinessModel {
         this.email = email;
     }
 
-    @Column(name  ="MOBILE_NO")
+    @Column(name  ="PHONE")
     public String getPhone() {
         return phone;
     }
