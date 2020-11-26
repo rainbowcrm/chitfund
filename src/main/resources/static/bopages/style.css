@@ -10,7 +10,7 @@ html{
 /* navbar */
 .sidebar {
   height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .9)), url(images/img1.jpeg);
+  background-color:black;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -19,8 +19,7 @@ html{
 
 .content-section{
   height: 100vh;
-
-  margin-top: 6%;
+  margin-top: 2%;
   width: 100%;
 
 }

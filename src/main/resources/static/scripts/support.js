@@ -328,7 +328,7 @@ function login()
      request.setRequestHeader("Content-type", "application/json");
         request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-         window.location.href = './bopages/bosimplelanding.html'
+         window.location.href = './bopages/bolanding.html'
         }else
         {
          $("#erromessage")[0].innerHTML ="Authorization failed";
@@ -337,8 +337,6 @@ function login()
 
     try {
        request.send(JSON.stringify(data),true) ;
-
-
     }catch(err)
     {
      $("#erromessage")[0].innerHTML ="Authorization failed";
