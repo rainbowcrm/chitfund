@@ -6,6 +6,7 @@ import com.primus.generic.GenericService;
 import com.primus.generic.GenericValidator;
 import com.primus.metadata.model.MetadataEntity;
 import com.primus.metadata.service.MetadataService;
+import com.primus.scheme.service.SchemeService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -17,6 +18,9 @@ public class ObjectFactory implements ApplicationContextAware {
 
     @Autowired
     GenericService genericService ;
+
+    @Autowired
+    SchemeService schemeService ;
 
     @Autowired
     GenericValidator genericValidator ;
@@ -35,7 +39,10 @@ public class ObjectFactory implements ApplicationContextAware {
 
     public GenericService getServiceForEntity(String entity,BusinessContext context)
     {
-        return  genericService;
+        if ("Scheme".equalsIgnoreCase(entity))
+            return schemeService ;
+        else
+            return  genericService;
     }
 
 
@@ -49,6 +56,9 @@ public class ObjectFactory implements ApplicationContextAware {
     {
         if("genericService".equalsIgnoreCase(obj))
             return genericService ;
+        else if("schemeService".equalsIgnoreCase(obj))
+            return schemeService;
+
 
         return genericService;
     }

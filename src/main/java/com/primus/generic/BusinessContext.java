@@ -80,6 +80,12 @@ public class BusinessContext implements IRadsContext, Serializable {
         return context;
 
     }
+    public static BusinessContext createSchedulerContext() {
+        BusinessContext context = new BusinessContext();
+        context.setUser("scheduler");
+        return context;
+
+    }
 
     public static BusinessContext createContext()
     {
